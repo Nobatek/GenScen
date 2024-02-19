@@ -1,0 +1,192 @@
+# baseURI: https://nobatek.inef4.com/data-models/energy_audit#
+# prefix: audit
+
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dce: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rscen: <https://nobatek.inef4.com/data-models/renovation-scenario#> .
+@prefix schema: <https://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dcterms:contributor
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:creator
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:description
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:issued
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:license
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:modified
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:title
+  rdf:type owl:AnnotationProperty ;
+.
+vann:preferredNamespacePrefix
+  rdf:type owl:AnnotationProperty ;
+.
+vann:preferredNamespaceUri
+  rdf:type owl:AnnotationProperty ;
+.
+voaf:Vocabulary
+  rdf:type owl:Class ;
+.
+vs:term_status
+  rdf:type owl:AnnotationProperty ;
+.
+vcard:fn
+  rdf:type owl:AnnotationProperty ;
+.
+audit:
+  rdf:type voaf:Vocabulary ;
+  rdf:type owl:Ontology ;
+  dcterms:creator "Pierre Bourreau" ;
+  dcterms:description """An ontology to summarize knowledge required ot perform a quick energy assesment of a building"""@en ;
+  dcterms:issued "2022-10-19T12:00:00"^^xsd:dateTime ;
+  dcterms:license <https://creativecommons.org/licenses/by/1.0/> ;
+  dcterms:modified "2020-07-31T08:51:00"^^xsd:dateTime ;
+  dcterms:title "An energy summary of a building"@en ;
+  vann:preferredNamespacePrefix "audit:" ;
+  vann:preferredNamespaceUri audit: ;
+  owl:versionInfo "0.1" ;
+.
+
+audit:BuildingStatus
+  rdfs:comment "A specific type of generation criterion, related to the status of the building. It encompasses all kind of information related to the existing building, prior renovation." ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:subClassOf rscen:Criterion ;
+  owl:disjointWith rscen:ClimateConditions ;
+  owl:disjointWith rscen:FinancialConstraint ;
+.
+rscen:ClimateConditions
+  rdfs:comment "A specific type of generation criterion, related to the status of the building. It encompasses all kind of information related to the existing building, prior renovation." ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:subClassOf rscen:Criterion ;
+  owl:disjointWith rscen:BuildingStatus ;
+  owl:disjointWith rscen:FinancialConstraint ;
+.
+rscen:ClimateZone
+  rdf:type rscen:ClimateConditions ;
+  rdfs:comment "The climate zone where the building is located." ;
+  rscen:value [
+      owl:oneOf (
+          "Alpine North"
+          "Alpine South"
+          "Atlantic North"
+          "Atlantic Central"
+          "Lusitanian"
+          "Boreal"
+          "Nemoral"
+          "Continental"
+          "Pannonian"
+          "Anatolian"
+          "Mediterranean Mountain"
+          "Mediterranean North"
+          "Mediterranean South"
+        ) ;
+    ] ;
+.
+.
+rscen:CoolingInstalled
+  rdf:type rscen:BuildingStatus ;
+  rdfs:comment "Flag/boolean indicating the presence of a cooling system befor erenovation." ;
+  rscen:value "xsd:boolean" ;
+.
+rscen:ElectricityCons
+  rdf:type rscen:BuildingStatus ;
+  rdfs:comment "The yearly electricity consumption of the building." ;
+  rscen:value xsd:double ;
+.
+rscen:WindowGlazing
+  rdf:type rscen:BuildingStatus ;
+  rdfs:comment "The type of glazing on the windows." ;
+  rscen:value [
+      owl:oneOf (
+          "Simple"
+          "Double"
+          "Triple"
+        ) ;
+    ] ;
+.
+rscen:GazCons
+  rdf:type rscen:BuildingStatus ;
+  rdfs:comment "The yearly gaz consumption of the building." ;
+  rscen:value xsd:double ;
+.
+rscen:HeatingEnergy
+  rdf:type rscen:BuildingStatus ;
+  rdfs:comment "The type of energy used for heating." ;
+  rscen:value [
+      owl:oneOf (
+          "Electricity"
+          "Gaz"
+          "Fuel"
+          "Wood"
+          "Other"
+        ) ;
+    ] ;
+.
+rscen:HeatingMode
+  rdf:type rscen:BuildingStatus ;
+  rscen:value [
+      owl:oneOf (
+          "Central"
+          "Individual"
+        ) ;
+    ] ;
+.
+rscen:Orientation
+  rdf:type rscen:BuildingStatus ;
+  rdfs:comment "Orientation of the building, considering the façade with the main entrance." ;
+  rscen:value [
+      owl:oneOf (
+          "North"
+          "South"
+          "West"
+          "East"
+        ) ;
+    ] ;
+.
+
+rscen:forProject
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain rscen:Criterion ;
+  rdfs:domain rscen:RenoScenario ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:range rscen:RenoProject ;
+.
+rscen:isMadeOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain rscen:RenoScenario ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:range rscen:RenoAction ;
+.
+<https://orcid.org/0000-0001-6085-8461>
+  rdf:type vcard:Individual ;
+  rdf:type schema:Person ;
+  vcard:fn "Pierre Bourreau" ;
+  schema:name "Pierre Bourreau" ;
+.
+schema:domainIncludes
+  rdf:type owl:AnnotationProperty ;
+.
+schema:name
+  rdf:type owl:AnnotationProperty ;
+.
+schema:rangeIncludes
+  rdf:type owl:AnnotationProperty ;
+.

@@ -1,0 +1,110 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix list: <https://w3id.org/list#> .
+@prefix : <https://nobatek.inef4.com/data-models/renovation-scenario/building-characteristics#> .
+
+[ratio_roof_façade:
+    (?p rdf:type rscen:RenoProject) (
+    (?bldg :roofArea ?roof_area) (?bldg :façadeArea ?façade_area)
+    quotient(?roof_area, ?façade_area, ?ratio)
+    quotient(?façade_area, ?roof_area, ?ratio_façade)
+->  (?bldg :weightRoof ?ratio) (?bldg :_weightFaçade ?ratio_)]
+
+[ratio_glazing:
+    (?bldg rdf:type :Building) (?bldg :_weightFaçade ?r)
+    (?bldg :glazing_ratio ?glazing_pct)
+    quotient(?r, ?glazing_pct, ?w_façade)
+    product(?glazing_pct, ?r, ?w_window)
+->  (?bldg :weightFaçade ?w_façade) (?bldg :weightWindows ?w_window)]
+
+
+
+[roof_none:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightRoof ?r)
+    (?bldg :roofInsulationLevel "NONE")
+    product(?r, 1.5, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:RoofInsulation) (?priority rscen:value ?v)]
+
+[roof_low:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightRoof ?r)
+    (?bldg :roofInsulationLevel "LOW")
+    product(?r, 1, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:RoofInsulation) (?priority rscen:value ?v)]
+
+[roof_medium:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightRoof ?r)
+    (?bldg :roofInsulationLevel "MEDIUM")
+    product(?r, 0.5, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:RoofInsulation) (?priority rscen:value ?v)]
+
+[roof_high:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightRoof ?r)
+    (?bldg :roofInsulationLevel "HIGH")
+    product(?r, 0, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:RoofInsulation) (?priority rscen:value ?v)]
+
+
+
+[façade_none:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightFaçade ?r)
+    (?bldg :façadeInsulationLevel "NONE")
+    product(?r, 1.5, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:FaçadeInsulation) (?priority rscen:value ?v)]
+
+[façade_low:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightFaçade ?r)
+    (?bldg :façadeInsulationLevel "LOW")
+    product(?r, 1, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:FaçadeInsulation) (?priority rscen:value ?v)]
+
+[façade_medium:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightFaçade ?r)
+    (?bldg :façadeInsulationLevel "MEDIUM")
+    product(?r, 0.5, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:FaçadeInsulation) (?priority rscen:value ?v)]
+
+[façade_high:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightFaçade ?r)
+    (?bldg :façadeInsulationLevel "HIGH")
+    product(?r, 0, ?v)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:FaçadeInsulation) (?priority rscen:value ?v)]
+
+
+
+[windows_simple:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :weightWindow ?r)
+    (?bldg :glazing "SIMPLE")
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:Windows) (?priority rscen:value ?r)]
+[windows_HP:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :glazing "DOUBLE") (?bldg :weightWindow ?r)
+    quotient(?r, 2, ?w_windows)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:Windows) (?priority rscen:value ?w_windows)]
+
+
+[ventilation_none:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :ventilation "NONE")
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:Ventilation) (?priority rscen:value 6)]
+
+
+[heating_central_1:
+    (?p rdf:type rscen:RenoProject) 
+    ("Central" :centralHeating true) not(?bldg :heatingEnergy "Electricity")
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:Heating) (?priority rscen:value 3)
+]
+[heating_central_1:
+    (?p rdf:type rscen:RenoProject) (?p :onBuilding ?bldg)
+    (?bldg :centralHeating false) not(?bldg :heating rscen:HeatPump)
+-> (?priority rdf:type rscen:Priority) (?priority rscen:project ?p) (?priority rscen:post rscen:Heating) (?priority rscen:value 3)
+

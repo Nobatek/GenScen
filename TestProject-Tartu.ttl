@@ -1,0 +1,65 @@
+# baseURI: https://nobatek.inef4.com/renovation/test#
+# prefix: test
+
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dce: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix bldg: <https://nobatek.inef4.com/renovation/building#> .
+@prefix intrv: <https://nobatek.inef4.com/renovation/intervention#> .
+@prefix proj: <https://nobatek.inef4.com/renovation/project#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix : <https://nobatek.inef4.com/renovation/test#> .
+
+
+:pjct1 rdf:type proj:Project .
+
+:batiment1 rdf:type bldg:Building .
+
+:pjct1 proj:building :batiment1
+    proj:targetThermal 1.0, 0.7, 0.5, 0.3 ;
+    proj:targetElectricity 1.0, 0.7, 0.5, 0.3 ;
+.
+
+:pjct1 proj:location proj:Eesti .
+
+:batiment1 bldg:hasFacade [
+    bldg:orientation "North" ;
+    bldg:area "66.79"^^xsd:double ;
+    bldg:facadeInsulation "Low" ;
+    ] .
+
+:batiment1 bldg:hasFacade [
+    bldg:orientation "South" ;
+    bldg:area "70.58"^^xsd:double ;
+    bldg:facadeInsulation "Low" ;
+    ] .
+    
+:batiment1 bldg:hasFacade [
+    bldg:orientation "East" ;
+    bldg:area "49.25"^^xsd:double ;
+    bldg:facadeInsulation "Low" ;
+    ] .
+    
+:batiment1 bldg:hasFacade [
+    bldg:orientation "West" ;
+    bldg:area "62.65"^^xsd:double ;
+    bldg:facadeInsulation "Low" ;
+    ] .
+
+:batiment1 bldg:glazingRatio 0.3 ;
+    bldg:livingArea "476.39"^^xsd:double ;
+    bldg:nbDwellings 10 ;
+    bldg:roofArea "300.82"^^xsd:double ;
+    bldg:maxFacadeArea "86.18"^^xsd:double ;
+    bldg:roofInsulation "Medium" ;
+    bldg:heatingEnergy "Wood" ;
+    bldg:centralHeating "True" ;
+    bldg:ventilation "None" ;
+    bldg:glazingLevel "Single" ;
+    bldg:ratioPV_Roof "0.0"^^xsd:double ;
+.
+

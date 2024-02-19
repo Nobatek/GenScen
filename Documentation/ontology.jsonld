@@ -1,0 +1,979 @@
+[ {
+  "@id" : "http://purl.org/dc/terms/contributor",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/dc/terms/creator",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/dc/terms/description",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/dc/terms/issued",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/dc/terms/license",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/dc/terms/modified",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/dc/terms/title",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/vocab/vann/preferredNamespacePrefix",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/vocab/vann/preferredNamespaceUri",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://purl.org/vocommons/voaf#Vocabulary",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/2006/vcard/ns#Individual",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://www.w3.org/2006/vcard/ns#fn",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Ontology", "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://purl.org/dc/terms/creator" : [ {
+    "@value" : "Pierre Bourreau"
+  } ],
+  "http://purl.org/dc/terms/description" : [ {
+    "@language" : "en",
+    "@value" : "The Renovation Scenarion Ontology (RenOnt) is designed to describe renovation scenarios, in particular those related to energy-efficient renovations.\n\t\tIt characterizes Renovation Alternatives"
+  } ],
+  "http://purl.org/dc/terms/issued" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "@value" : "2022-10-19T12:00:00"
+  } ],
+  "http://purl.org/dc/terms/license" : [ {
+    "@id" : "https://creativecommons.org/licenses/by/1.0/"
+  } ],
+  "http://purl.org/dc/terms/modified" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "@value" : "2020-07-31T08:51:00"
+  } ],
+  "http://purl.org/dc/terms/title" : [ {
+    "@language" : "en",
+    "@value" : "A Renovation Scenario Ontology (RenOnt)"
+  } ],
+  "http://purl.org/vocab/vann/preferredNamespacePrefix" : [ {
+    "@value" : "rscen:"
+  } ],
+  "http://purl.org/vocab/vann/preferredNamespaceUri" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "http://purl.org/vocommons/voaf#Vocabulary"
+  } ],
+  "http://www.w3.org/2002/07/owl#versionInfo" : [ {
+    "@value" : "0.1"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#AirAirHeatPumpInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#AirWaterHeatPumpInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingReplacement"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BaselineScenario",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BoilerReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingReplacement"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Budget",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#FinancialConstraint"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The global budget of the renovation, has defined by the client. It does not entail potential incentives."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "http://www.w3.org/2001/XMLSchema#double"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A specific type of generation criterion, related to the status of the building. It encompasses all kind of information related to the existing building, prior renovation."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Criterion"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ClimateConditions"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#FinancialConstraint"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ClimateConditions",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A specific type of generation criterion, related to the status of the building. It encompasses all kind of information related to the existing building, prior renovation."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Criterion"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#FinancialConstraint"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ClimateZone",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ClimateConditions"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The climate zone where the building is located."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid1"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingInstalled",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Flag/boolean indicating the presence of a cooling system befor erenovation."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@value" : "xsd:boolean"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Criterion",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A criterion is a parameter of influence in the generation of a renovation scenario."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoProject"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#DoorsReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#DoubleGlazedWindowInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#WindowsReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_10cm_Aluminium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_10cm_Coating",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_10cm_PVC",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_10cm_Wood",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_14cm_Aluminium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_14cm_Coating",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_14cm_PVC",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Biosourced_14cm_Wood",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Coating_10cm_Coating",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Coating_14cm_Coating",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_10cm_Aluminium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_10cm_Coating",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_10cm_PVC",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_10cm_Wood",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_14cm_Aluminium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_14cm_Coating",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_14cm_PVC",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_Mineral_14cm_Wood",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_PVC_10cm_Aluminium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_PVC_10cm_PVC",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_PVC_10cm_Wood",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_PVC_14cm_Aluminium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_PVC_14cm_PVC",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ETI_PVC_14cm_Wood",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ElectricityCons",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The yearly electricity consumption of the building."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "http://www.w3.org/2001/XMLSchema#double"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalFaçadeInsulation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateFaçade"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalInsulation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A boolean value to determine whether an external insulation is already installed (true) or not (false)."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "http://www.w3.org/2001/XMLSchema#boolean"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ExternalRoofInsulation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateRoof"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#FaçadeInsulationLevel",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The level of insulation of the façade. Values are None, Low or High."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid2"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#FinancialConstraint",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A specific type of generation criterion, related to the economic constraints of the project. Typically, the global budget of the project is a driver for a renovation project."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Criterion"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#GazCons",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The yearly gaz consumption of the building."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "http://www.w3.org/2001/XMLSchema#double"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingEnergy",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The type of energy used for heating."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid3"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingMode",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid4"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ITI_10cm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ITI_14cm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ITI_Biosourced_10cm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ITI_Biosourced_14cm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ITI_Mineral_10cm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#ITI_Mineral_14cm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateFaçade",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateRoof",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateSlab",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalFaçadeInsulation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateFaçade"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InternalRoofInsulation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateRoof"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#LEDInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#LightingReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#LightingReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#LoftInsulation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#InsulateRoof"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Orientation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Orientation of the building, considering the façade with the main entrance."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid5"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PV-TInstallationFaçade",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PV-TInstallationRoof",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallationFaçade",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallationRoof",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#PVInstallation"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A renovation action is a refinement of a renovation alternative, with technical details on the elements to associate to the renovation; ex: external wall insulation with 14cm mineral wool."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoProject"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A renovation alternative is a refinement of a renovation approach, describing into more details the type of renovation action that will be made; ex: external/internal wall insulation..."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoProject"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A renovation approach describes the type of work that can be executed. It must be related to a some building element/renovation post; ex: insulation, windows, doors..."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoProject"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoProject",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A renovation project is associated to one or many buildings, and can comprise many renovation scenarios."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A renovation scenario is a way to envisage the renovation of a/many buildings. It is made of multiple renovation approaches."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RoofInsulationLevel",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The level of insulation of the roof. Values are None, Low or High."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid6"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#SolarThermalFaçadeInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#SolarThermalRoofInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#TripleGlazedWindowInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#WindowsReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#VentilationReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#WaterAirHeatPumpInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#WaterWaterHeatPumpInstallation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#refines" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#CoolingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingInstallation"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HeatingReplacement"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#HotWaterReplacement"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#WindowGlazing",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#BuildingStatus"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The type of glazing on the windows."
+  } ],
+  "https://nobatek.inef4.com/data-models/renovation-scenario#value" : [ {
+    "@id" : "_:genid7"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#WindowsReplacement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#forProject",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Criterion"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoProject"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#isMadeOf",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#nZeBScenario",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoScenario"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#refines",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoApproach"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#isDefinedBy" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAction"
+  }, {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#RenoAlternative"
+  } ]
+}, {
+  "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#value",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "https://nobatek.inef4.com/data-models/renovation-scenario#Criterion"
+  } ]
+}, {
+  "@id" : "https://orcid.org/0000-0001-6085-8461",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual" ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+    "@id" : "http://www.w3.org/2006/vcard/ns#Individual"
+  }, {
+    "@id" : "https://schema.org/Person"
+  } ],
+  "http://www.w3.org/2006/vcard/ns#fn" : [ {
+    "@value" : "Pierre Bourreau"
+  } ],
+  "https://schema.org/name" : [ {
+    "@value" : "Pierre Bourreau"
+  } ]
+}, {
+  "@id" : "https://schema.org/Person",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "https://schema.org/domainIncludes",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "https://schema.org/name",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "https://schema.org/rangeIncludes",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+} ]

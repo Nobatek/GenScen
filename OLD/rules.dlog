@@ -1,0 +1,53 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix list: <https://w3id.org/list#> .
+@prefix rscen: <https://nobatek.inef4.com/data-models/renovation-scenario#> .
+
+
+
+[rscen:FaçadeInsulation, rscen:forProject, ?p],
+[rscen:PVInstallation, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c1, rscen:forProject, ?p], [?c1, rdf:type, rscen:FaçadeInsulation], [?c1, rscen:value, "None"],
+    [rscen:SolarPotential rscen:forProject, ?p],
+    [?c3, rscen:forProject, ?p], [?c3, rdf:type, rscen:ElectricityCons], [?c3, rscen:value, ?elec], FILTER(?elec > 100) .
+
+[rscen:CoolingReplacement, rscen:forProject, ?p],
+[rscen:FaçadeInsulation, rscen:forProject, ?p],
+[rscen:PVInstallation, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c1, rscen:forProject, ?p], [?c1, rdf:type, rscen:FaçadeInsulation], [?c1, rscen:value, "None"],
+    [rscen:SolarPotential rscen:forProject, ?p],
+    [?c3, rscen:forProject, ?p], [?c3, rdf:type, rscen:ElectricityCons], [?c3, rscen:value, ?elec], FILTER(?elec > 100) .
+
+    
+[rscen:CoolingReplacement, rscen:forProject, ?p],
+[rscen:FaçadeInsulation, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c1, rscen:forProject, ?p], [?c1, rdf:type, rscen:FaçadeInsulation], [?c1, rscen:value, "None"],
+    [rscen:SolarPotential rscen:forProject, ?p],
+    [?c3, rscen:forProject, ?p], [?c3, rdf:type, rscen:ElectricityCons], [?c3, rscen:value, ?elec], FILTER(?elec <= 100) .
+
+
+[rscen:CoolingReplacement, rscen:forProject, ?p],
+[rscen:FaçadeInsulation, rscen:forProject, ?p],
+[rscen:PVInstallation, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c1, rscen:forProject, ?p], [?c1, rdf:type, rscen:FaçadeInsulation], [?c1, rscen:value, "Low"],
+    [rscen:SolarPotential rscen:forProject, ?p],
+    [?c3, rscen:forProject, ?p], [?c3, rdf:type, rscen:ElectricityCons], [?c3, rscen:value, ?elec], FILTER(?elec > 100) .
+
+
+[rscen:CoolingReplacement, rscen:forProject, ?p],
+[rscen:FaçadeInsulation, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c1, rscen:forProject, ?p], [?c1, rdf:type, rscen:FaçadeInsulation], [?c1, rscen:value, "Low"],
+    [rscen:SolarPotential rscen:forProject, ?p],
+    [?c3, rscen:forProject, ?p], [?c3, rdf:type, rscen:ElectricityCons], [?c3, rscen:value, ?elec], FILTER(?elec <= 100) .
+

@@ -1,0 +1,58 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix list: <https://w3id.org/list#> .
+@prefix rscen: <https://nobatek.inef4.com/data-models/renovation-scenario#> .
+
+[rscen:AridSummer, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Mediterranean South"] .
+[rscen:AridSummer, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Mediterranean North"] .
+[rscen:AridSummer, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Alpine South"] .
+[rscen:AridSummer, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Anatolian"] .
+
+
+
+[rscen:SolarPotential, rscen:forProject, ?p]
+:-
+    [rscen:AridSummer, rscen:forProject, ?p] .
+[rscen:SolarPotential, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Mediterranean Mountain"] .
+[rscen:SolarPotential, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Lusitanian"] .
+[rscen:SolarPotential, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Pannonian"] .
+
+
+[rscen:CoolingNeeded, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Mediterranean South"] .
+[rscen:CoolingNeeded, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Mediterranean North"] .
+[rscen:CoolingNeeded, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Alpine South"] .
+[rscen:SolarPotential, rscen:forProject, ?p]
+:-
+    [?p, rdf:type, rscen:RenoProject],
+    [?c, rscen:forProject, ?p], [?c, rdf:type, rscen:ClimateZone], [?c, rscen:value, "Anatolian"] .

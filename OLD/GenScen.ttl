@@ -1,0 +1,551 @@
+# baseURI: https://nobatek.inef4.com/data-models/renovation-scenario#
+# prefix: rscen
+
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dce: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rscen: <https://nobatek.inef4.com/data-models/renovation-scenario#> .
+@prefix schema: <https://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dcterms:contributor
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:creator
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:description
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:issued
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:license
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:modified
+  rdf:type owl:AnnotationProperty ;
+.
+dcterms:title
+  rdf:type owl:AnnotationProperty ;
+.
+vann:preferredNamespacePrefix
+  rdf:type owl:AnnotationProperty ;
+.
+vann:preferredNamespaceUri
+  rdf:type owl:AnnotationProperty ;
+.
+voaf:Vocabulary
+  rdf:type owl:Class ;
+.
+vs:term_status
+  rdf:type owl:AnnotationProperty ;
+.
+vcard:fn
+  rdf:type owl:AnnotationProperty ;
+.
+rscen:
+  rdf:type voaf:Vocabulary ;
+  rdf:type owl:Ontology ;
+  dcterms:creator "Pierre Bourreau" ;
+  dcterms:description """The Renovation Scenarion Ontology (RenOnt) is designed to describe renovation scenarios, in particular those related to energy-efficient renovations.
+		It characterizes Renovation Alternatives"""@en ;
+  dcterms:issued "2022-10-19T12:00:00"^^xsd:dateTime ;
+  dcterms:license <https://creativecommons.org/licenses/by/1.0/> ;
+  dcterms:modified "2020-07-31T08:51:00"^^xsd:dateTime ;
+  dcterms:title "A Renovation Scenario Ontology (RenOnt)"@en ;
+  vann:preferredNamespacePrefix "rscen:" ;
+  vann:preferredNamespaceUri rscen: ;
+  owl:versionInfo "0.1" ;
+.
+rscen:AirAirHeatPumpInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:CoolingInstallation ;
+  rscen:refines rscen:HeatingInstallation ;
+  rscen:refines rscen:HeatingReplacement ;
+.
+rscen:AirWaterHeatPumpInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:CoolingInstallation ;
+  rscen:refines rscen:HeatingInstallation ;
+  rscen:refines rscen:HeatingReplacement ;
+  rscen:refines rscen:HotWaterReplacement ;
+.
+rscen:BaselineScenario
+  rdf:type owl:Class ;
+  rdfs:subClassOf rscen:RenoScenario ;
+.
+rscen:BoilerReplacement
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:HeatingReplacement ;
+  rscen:refines rscen:HotWaterReplacement ;
+.
+rscen:Budget
+  rdf:type rscen:FinancialConstraint ;
+  rdfs:comment "The global budget of the renovation, has defined by the client. It does not entail potential incentives." ;
+  rscen:value xsd:double ;
+.
+rscen:BuildingCharacteristics
+  rdfs:comment "A specific type of generation criterion, related to the status of the building. It encompasses all kind of information related to the existing building, prior renovation." ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:subClassOf rscen:Criterion ;
+  owl:disjointWith rscen:ClimateConditions ;
+  owl:disjointWith rscen:FinancialConstraint ;
+.
+rscen:ClimateConditions
+  rdfs:comment "A specific type of generation criterion, related to the status of the building. It encompasses all kind of information related to the existing building, prior renovation." ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:subClassOf rscen:Criterion ;
+  owl:disjointWith rscen:BuildingCharacteristics ;
+  owl:disjointWith rscen:FinancialConstraint ;
+.
+rscen:ClimateZone
+  rdf:type rscen:ClimateConditions ;
+  rdfs:comment "The climate zone where the building is located." ;
+  rscen:value [
+      owl:oneOf (
+          "Alpine North"
+          "Alpine South"
+          "Atlantic North"
+          "Atlantic Central"
+          "Lusitanian"
+          "Boreal"
+          "Nemoral"
+          "Continental"
+          "Pannonian"
+          "Anatolian"
+          "Mediterranean Mountain"
+          "Mediterranean North"
+          "Mediterranean South"
+        ) ;
+    ] ;
+.
+rscen:CoolingInstallation
+  rdf:type rscen:RenoApproach ;
+.
+rscen:CoolingInstalled
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "Flag/boolean indicating the presence of a cooling system before renovation." ;
+  rscen:value "xsd:boolean" ;
+.
+rscen:CoolingReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:Criterion
+  rdf:type owl:Class ;
+  rdfs:comment "A criterion is a parameter of influence in the generation of a renovation scenario." ;
+  rdfs:isDefinedBy rscen: ;
+  owl:disjointWith rscen:RenoAction ;
+  owl:disjointWith rscen:RenoAlternative ;
+  owl:disjointWith rscen:RenoApproach ;
+.
+rscen:DoorsReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:DoubleGlazedWindowInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:WindowsReplacement ;
+.
+rscen:ETI_Biosourced_10cm_Aluminium
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_10cm_Coating
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_10cm_PVC
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_10cm_Wood
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_14cm_Aluminium
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_14cm_Coating
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_14cm_PVC
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Biosourced_14cm_Wood
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Coating_10cm_Coating
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Coating_14cm_Coating
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_10cm_Aluminium
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_10cm_Coating
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_10cm_PVC
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_10cm_Wood
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_14cm_Aluminium
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_14cm_Coating
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_14cm_PVC
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_Mineral_14cm_Wood
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_PVC_10cm_Aluminium
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_PVC_10cm_PVC
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_PVC_10cm_Wood
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_PVC_14cm_Aluminium
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_PVC_14cm_PVC
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ETI_PVC_14cm_Wood
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:ExternalFaçadeInsulation ;
+.
+rscen:ElectricityCons
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The yearly electricity consumption of the building." ;
+  rscen:value xsd:double ;
+.
+rscen:ExternalFaçadeInsulation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:InsulateFaçade ;
+.
+rscen:ExternalInsulation
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "A boolean value to determine whether an external insulation is already installed (true) or not (false)." ;
+  rscen:value xsd:boolean ;
+.
+rscen:ExternalRoofInsulation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:InsulateRoof ;
+.
+rscen:FaçadeInsulationLevel
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The level of insulation of the façade. Values are None, Low or High." ;
+  rscen:value [
+      owl:oneOf (
+          "None"
+          "Low"
+          "Medium"
+          "High"
+        ) ;
+    ] ;
+.
+rscen:FinancialConstraint
+  rdfs:comment "A specific type of generation criterion, related to the economic constraints of the project. Typically, the global budget of the project is a driver for a renovation project." ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:subClassOf rscen:Criterion ;
+  owl:disjointWith rscen:BuildingCharacteristics ;
+  owl:disjointWith rscen:ClimateConditions ;
+.
+rscen:GazCons
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The yearly gaz consumption of the building." ;
+  rscen:value xsd:double ;
+.
+rscen:HeatingEnergy
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The type of energy used for heating." ;
+  rscen:value [
+      owl:oneOf (
+          "Electricity"
+          "Gaz"
+          "Fuel"
+          "Wood"
+          "Other"
+        ) ;
+    ] ;
+.
+rscen:HeatingMode
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The type of heating in the building, whether it is a central or individual system." ;
+  rscen:value [
+      owl:oneOf (
+          "Central"
+          "Individual"
+        ) ;
+    ] ;
+.
+rscen:HeatingReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:HotWaterReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:ITI_10cm
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:InternalFaçadeInsulation ;
+.
+rscen:ITI_14cm
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:InternalFaçadeInsulation ;
+.
+rscen:ITI_Biosourced_10cm
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:InternalFaçadeInsulation ;
+.
+rscen:ITI_Biosourced_14cm
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:InternalFaçadeInsulation ;
+.
+rscen:ITI_Mineral_10cm
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:InternalFaçadeInsulation ;
+.
+rscen:ITI_Mineral_14cm
+  rdf:type rscen:RenoAction ;
+  rscen:refines rscen:InternalFaçadeInsulation ;
+.
+rscen:InsulateFaçade
+  rdf:type rscen:RenoApproach ;
+.
+rscen:InsulateRoof
+  rdf:type rscen:RenoApproach ;
+.
+rscen:InsulateSlab
+  rdf:type rscen:RenoApproach ;
+.
+rscen:InternalFaçadeInsulation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:InsulateFaçade ;
+.
+rscen:InternalRoofInsulation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:InsulateRoof ;
+.
+rscen:LEDInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:LightingReplacement ;
+.
+rscen:LightingReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:LoftInsulation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:InsulateRoof ;
+.
+rscen:Orientation
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "Orientation of the building, considering the façade with the main entrance." ;
+  rscen:value [
+      owl:oneOf (
+          "North"
+          "South"
+          "West"
+          "East"
+        ) ;
+    ] ;
+.
+rscen:PV-TInstallationFaçade
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:HotWaterReplacement ;
+  rscen:refines rscen:PVInstallation ;
+.
+rscen:PV-TInstallationRoof
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:HotWaterReplacement ;
+  rscen:refines rscen:PVInstallation ;
+.
+rscen:PVInstallation
+  rdf:type rscen:RenoApproach ;
+.
+rscen:PVInstallationFaçade
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:PVInstallation ;
+.
+rscen:PVInstallationRoof
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:PVInstallation ;
+.
+rscen:RenoAction
+  rdf:type owl:Class ;
+  rdfs:comment "A renovation action is a refinement of a renovation alternative, with technical details on the elements to associate to the renovation; ex: external wall insulation with 14cm mineral wool." ;
+  rdfs:isDefinedBy rscen: ;
+  owl:disjointWith rscen:RenoAlternative ;
+  owl:disjointWith rscen:RenoApproach ;
+  owl:disjointWith rscen:RenoScenario ;
+.
+rscen:RenoAlternative
+  rdf:type owl:Class ;
+  rdfs:comment "A renovation alternative is a refinement of a renovation approach, describing into more details the type of renovation action that will be made; ex: external/internal wall insulation..." ;
+  rdfs:isDefinedBy rscen: ;
+  owl:disjointWith rscen:RenoAction ;
+  owl:disjointWith rscen:RenoApproach ;
+  owl:disjointWith rscen:RenoScenario ;
+.
+rscen:RenoApproach
+  rdf:type owl:Class ;
+  rdfs:comment "A renovation approach describes the type of work that can be executed. It must be related to a some building element/renovation post; ex: insulation, windows, doors..." ;
+  rdfs:isDefinedBy rscen: ;
+  owl:disjointWith rscen:RenoAction ;
+  owl:disjointWith rscen:RenoAlternative ;
+  owl:disjointWith rscen:RenoScenario ;
+.
+rscen:RenoProject
+  rdf:type owl:Class ;
+  rdfs:comment "A renovation project is associated to one or many buildings, and can comprise many renovation scenarios." ;
+  rdfs:isDefinedBy rscen: ;
+  owl:disjointWith rscen:Criterion ;
+  owl:disjointWith rscen:RenoAction ;
+  owl:disjointWith rscen:RenoAlternative ;
+  owl:disjointWith rscen:RenoApproach ;
+  owl:disjointWith rscen:RenoScenario ;
+.
+rscen:RenoScenario
+  rdf:type owl:Class ;
+  rdfs:comment "A renovation scenario is a way to envisage the renovation of a/many buildings. It is made of multiple renovation approaches." ;
+  rdfs:isDefinedBy rscen: ;
+  owl:disjointWith rscen:Criterion ;
+  owl:disjointWith rscen:RenoAction ;
+  owl:disjointWith rscen:RenoAlternative ;
+  owl:disjointWith rscen:RenoApproach ;
+.
+rscen:RoofInsulationLevel
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The level of insulation of the roof. Values are None, Low or High." ;
+  rscen:value [
+      owl:oneOf (
+          "None"
+          "Low"
+          "Medium"
+          "High"
+        ) ;
+    ] ;
+.
+rscen:SolarThermalFaçadeInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:HotWaterReplacement ;
+.
+rscen:SolarThermalRoofInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:HotWaterReplacement ;
+.
+rscen:TripleGlazedWindowInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:WindowsReplacement ;
+.
+rscen:VentilationReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:WaterAirHeatPumpInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:CoolingInstallation ;
+  rscen:refines rscen:HeatingInstallation ;
+  rscen:refines rscen:HeatingReplacement ;
+.
+rscen:WaterWaterHeatPumpInstallation
+  rdf:type rscen:RenoAlternative ;
+  rscen:refines rscen:CoolingInstallation ;
+  rscen:refines rscen:HeatingInstallation ;
+  rscen:refines rscen:HeatingReplacement ;
+  rscen:refines rscen:HotWaterReplacement ;
+.
+rscen:WindowGlazing
+  rdf:type rscen:BuildingCharacteristics ;
+  rdfs:comment "The type of glazing on the windows." ;
+  rscen:value [
+      owl:oneOf (
+          "Simple"
+          "Double"
+          "Triple"
+        ) ;
+    ] ;
+.
+rscen:WindowsReplacement
+  rdf:type rscen:RenoApproach ;
+.
+rscen:forProject
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain rscen:Criterion ;
+  rdfs:domain rscen:RenoScenario ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:range rscen:RenoProject ;
+.
+rscen:hasProperty
+  rdf:type owl:ObjectProperty ;
+.
+rscen:isMadeOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain rscen:RenoScenario ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:range rscen:RenoAction ;
+.
+rscen:nZeBScenario
+  rdf:type owl:Class ;
+  rdfs:subClassOf rscen:RenoScenario ;
+.
+rscen:refines
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain rscen:RenoAlternative ;
+  rdfs:domain rscen:RenoApproach ;
+  rdfs:isDefinedBy rscen: ;
+  rdfs:range rscen:RenoAction ;
+  rdfs:range rscen:RenoAlternative ;
+.
+rscen:value
+  rdf:type owl:DatatypeProperty ;
+  rdfs:domain rscen:Criterion ;
+.
+<https://orcid.org/0000-0001-6085-8461>
+  rdf:type vcard:Individual ;
+  rdf:type schema:Person ;
+  vcard:fn "Pierre Bourreau" ;
+  schema:name "Pierre Bourreau" ;
+.
+schema:domainIncludes
+  rdf:type owl:AnnotationProperty ;
+.
+schema:name
+  rdf:type owl:AnnotationProperty ;
+.
+schema:rangeIncludes
+  rdf:type owl:AnnotationProperty ;
+.
