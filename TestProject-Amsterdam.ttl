@@ -26,6 +26,8 @@
 
 :pjct1 proj:location proj:West-Nederland .
 
+:pjct1 proj:id "1006" .
+
 :virtual-amsterdam bldg:hasFacade [
     bldg:orientation "South" ;
     bldg:area "190"^^xsd:double ;
