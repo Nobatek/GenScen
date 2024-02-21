@@ -3,7 +3,10 @@ import time
 import base64
 import requests
 import flask
-from flask import request, jsonify
+from flask import jsonify
+import json
+import datetime
+from extract import insert_data
 
 
 app = flask.Flask(__name__)
@@ -38,11 +41,11 @@ def get_technalia_data(project_id):
     hash_auth = sha512(str(now+'$'+core_url+'$'+user+'$'+prehash+'$'+passwd).encode('utf-8')).hexdigest()
     basic_auth = 'Basic ' + to_native_string(base64.b64encode(bytes(user + " : " + hash_auth, 'utf-8'))).strip()
 
-    headers = {'Content-Type': 'application/json', 'Authorization': basic_auth, 'Timestamp':  now}
+    headers = {'Content-Type': 'application/json', 'Authorization': basic_auth, 'Timestamp': now}
     res = requests.get(url2, params=params, headers=headers)
 
     if res.status_code == 200:
-        return res.content
+        return res.text
     else:
         switch = {
             400: "Bad Request",
@@ -61,20 +64,10 @@ def get_technalia_data(project_id):
 # ------------------------------------------------------------------------------------------------ #
 
 
-@app.route('/nobatek/put_ensnaredata/<int:project_id>', methods=['PUT'])
-def put_data(project_id):
+@app.route('/nobatek/post_ensnaredata/<int:project_id>', methods=['POST'])
+def post_data(project_id):
     data = get_technalia_data(project_id)
-
-    # TODO: UPDATE .TTL FILE
-
-    try:
-        with open('api-response.json', 'w') as file:
-            file.write(data.decode('utf-8'))
-
-        return jsonify({'message': 'Data successfully updated!'})
-    except Exception as e:
-        return jsonify({data: str(e)})
-
+    insert_data(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

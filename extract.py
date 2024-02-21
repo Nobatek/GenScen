@@ -7,6 +7,8 @@ SPARQLQuery = SPARQLWrapper(
     "http://localhost:3030/GenScen/query")
 SPARQLRemove = SPARQLWrapper(
     "http://localhost:3030/GenScen/update")
+SPARQLInsert = SPARQLWrapper(
+    "http://localhost:3030/GenScen/insert")
 
 
 def _get_prefix():
@@ -17,6 +19,15 @@ def _get_prefix():
     PREFIX bldg: <https://nobatek.inef4.com/renovation/building#>
     PREFIX intv: <https://nobatek.inef4.com/renovation/intervention#>
     '''
+
+def insert(data):
+    query = f"""
+        {_get_prefix()}
+
+        INSERT DATA 
+        
+    """
+    insert_data(query)
 
 def get_baseline():
      query = f"""   
@@ -169,3 +180,11 @@ def remove_data():
     SPARQLRemove.setQuery('CLEAR ALL')
     return SPARQLRemove.query()
 
+def insert_data(query):
+    SPARQLInsert.setReturnFormat(JSON)
+    SPARQLInsert.setMethod('POST')
+    SPARQLInsert.setQuery(query)
+    try:
+        return SPARQLInsert.query()
+    except Exception as e:
+        print(e)
