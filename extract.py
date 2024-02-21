@@ -2,13 +2,14 @@ import itertools
 import uuid
 from functools import reduce
 from SPARQLWrapper import SPARQLWrapper, JSON
+from mapping import Mapping
 
 SPARQLQuery = SPARQLWrapper(
     "http://localhost:3030/GenScen/query")
 SPARQLRemove = SPARQLWrapper(
     "http://localhost:3030/GenScen/update")
 SPARQLInsert = SPARQLWrapper(
-    "http://localhost:3030/GenScen/insert")
+    "http://localhost:3030/GenScen")
 
 
 def _get_prefix():
@@ -20,14 +21,55 @@ def _get_prefix():
     PREFIX intv: <https://nobatek.inef4.com/renovation/intervention#>
     '''
 
-def insert(data):
+def insert_data(data):
+    mapping = Mapping()
+
+    #print(mapping.mapping_dict['euroregion'])
+    #print(mapping.get_euroregion_name(data['data']['Parameters']['euroregion']))
+    #print(mapping.mapping_dict['project_id'])
+    #print(data['data']['project_id'])
+
+    queryContent = f"""
+        :pjct1 rdf:type proj:Project .
+
+        :pjct1 "{mapping.mapping_dict['euroregion']}" "{mapping.get_euroregion_name(data['euroregion'])}" .
+
+        :prjt1 "{mapping.mapping_dict['project_id']}" "{data['data']['project_id']}" .
+
+        :batiment-"{data['data']['project_id']}" rdf:type bldg:Building .
+    """
+
+    for key, value in data['data']['Parameters'].items():
+        if key in mapping.mapping_dict:
+            queryContent += f"""
+                :batiment-"{data['data']['project_id']}" "{mapping.mapping_dict[key]}" "{value}" .
+            """
+    
+    # TODO: Verify if the query is correct
+            
+    # TODO: Add the code for the facades
+    
+
     query = f"""
         {_get_prefix()}
 
-        INSERT DATA 
-        
+        INSERT DATA {{
+            {queryContent}
+        }}
     """
-    insert_data(query)
+
+    """
+    SPARQLInsert.setMethod('POST')
+    SPARQLInsert.setReturnFormat(JSON)
+    SPARQLInsert.setQuery(query)
+    
+    try:
+        result = SPARQLInsert.query()
+        return result
+    except Exception as e:
+        print(f"⚠️  !!! Error executing SPARQL query: {e}")
+        return None"""
+
 
 def get_baseline():
      query = f"""   
@@ -179,12 +221,3 @@ def remove_data():
     SPARQLRemove.setMethod('POST')
     SPARQLRemove.setQuery('CLEAR ALL')
     return SPARQLRemove.query()
-
-def insert_data(query):
-    SPARQLInsert.setReturnFormat(JSON)
-    SPARQLInsert.setMethod('POST')
-    SPARQLInsert.setQuery(query)
-    try:
-        return SPARQLInsert.query()
-    except Exception as e:
-        print(e)

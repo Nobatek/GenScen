@@ -45,7 +45,7 @@ def get_technalia_data(project_id):
     res = requests.get(url2, params=params, headers=headers)
 
     if res.status_code == 200:
-        return res.text
+        return res.json()
     else:
         switch = {
             400: "Bad Request",
@@ -66,8 +66,17 @@ def get_technalia_data(project_id):
 
 @app.route('/nobatek/post_ensnaredata/<int:project_id>', methods=['POST'])
 def post_data(project_id):
-    data = get_technalia_data(project_id)
-    insert_data(data)
+    try:
+        data = get_technalia_data(project_id)
+        insert_data(data)
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+    return jsonify({"status": "success", "message": "Data inserted successfully"})
+
+@app.route('/tecnalia/<int:project_id>', methods=['GET'])
+def get_data(project_id):
+    return get_technalia_data(project_id)
 
 if __name__ == '__main__':
     app.run(debug=True)
