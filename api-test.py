@@ -69,10 +69,9 @@ def post_data(project_id):
     try:
         data = get_technalia_data(project_id)
         insert_data(data)
+        return jsonify({"status": "success", "message": "Data inserted successfully"}), 200
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)})
-
-    return jsonify({"status": "success", "message": "Data inserted successfully"})
+        return jsonify({"status": "error", "message": str(e)}), 400
 
 @app.route('/tecnalia/<int:project_id>', methods=['GET'])
 def get_data(project_id):

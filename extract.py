@@ -3,13 +3,14 @@ import uuid
 from functools import reduce
 from SPARQLWrapper import SPARQLWrapper, JSON
 from mapping import Mapping
+import json
 
 SPARQLQuery = SPARQLWrapper(
     "http://localhost:3030/GenScen/query")
 SPARQLRemove = SPARQLWrapper(
     "http://localhost:3030/GenScen/update")
 SPARQLInsert = SPARQLWrapper(
-    "http://localhost:3030/GenScen")
+    "http://localhost:3030/GenScen/update")
 
 
 def _get_prefix():
@@ -24,51 +25,100 @@ def _get_prefix():
 def insert_data(data):
     mapping = Mapping()
 
-    #print(mapping.mapping_dict['euroregion'])
-    #print(mapping.get_euroregion_name(data['data']['Parameters']['euroregion']))
-    #print(mapping.mapping_dict['project_id'])
-    #print(data['data']['project_id'])
+    # Building
+    if "project_id" not in data['data'] or 'euroregion' not in data['data']['Parameters']:
+        raise Exception("Error 404 : Project ID or Parameters not found in the request body")
 
     queryContent = f"""
-        :pjct1 rdf:type proj:Project .
+    tst:pjct{data['data']['project_id']} rdf:type proj:Project ;
+        {mapping.mapping_dict['project_id']} {data['data']['project_id']} ;
+        {mapping.mapping_dict['euroregion']} proj:{mapping.get_euroregion_name(data['data']['Parameters']['euroregion'])} .
 
-        :pjct1 "{mapping.mapping_dict['euroregion']}" "{mapping.get_euroregion_name(data['euroregion'])}" .
+    tst:batiment-{data['data']['project_id']} rdf:type bldg:Building .
 
-        :prjt1 "{mapping.mapping_dict['project_id']}" "{data['data']['project_id']}" .
-
-        :batiment-"{data['data']['project_id']}" rdf:type bldg:Building .
+    tst:pjct{data['data']['project_id']} proj:building tst:batiment-{data['data']['project_id']} ;
+        proj:targetThermal 1.0, 0.7, 0.5, 0.3 ;
+        proj:targetElectricity 1.0, 0.7, 0.5, 0.3 .
     """
+
+    # Facades
+    if "Surfaces" not in data['data']:
+        raise Exception("Error 404 : Surfaces not found in the request body")
+    
+    facade_statements = []
+    maxFacadeArea = 0
+    roofArea = 0
+    roofInsulation = 0
+
+    for surface in data['data']['Surfaces']:
+        if surface['type'] == "wall":
+            orientation = mapping.get_orientation(int(surface['orientation']))
+            facade_area = float(surface['area'])
+            if "u.envelope" not in data['data']['Parameters']:
+                raise Exception("Error 404 : u.envelope not found in the request body")
+            facade_statement = f"""
+    tst:batiment-{data['data']['project_id']} bldg:hasFacade [
+        bldg:area "{facade_area}"^^xsd:double ;
+        bldg:orientation "{orientation}" ;
+        bldg:facadeInsulation "{mapping.get_level(float(data['data']['Parameters']['u.envelope']))}" ;
+    ] .
+    """
+            facade_statements.append(facade_statement)
+
+            if facade_area > maxFacadeArea:
+                maxFacadeArea = facade_area
+        elif surface['type'] == "roof":
+            roofArea = float(surface['area'])
+            if "u.roofs" not in data['data']['Parameters']:
+                raise Exception("Error 404 : u.roofs not found in the request body")
+            roofInsulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
+
+    queryContent += "".join(facade_statement for facade_statement in facade_statements)
+
+    # Parameters
+    all_parameters = ["sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
+    for key in all_parameters:
+        if key not in data['data']['Parameters']:
+            raise Exception(f"Error 404 : {key} not found in the request body")
+    
+    queryContent += f"""
+    tst:batiment-{data['data']['project_id']}"""
 
     for key, value in data['data']['Parameters'].items():
-        if key in mapping.mapping_dict:
-            queryContent += f"""
-                :batiment-"{data['data']['project_id']}" "{mapping.mapping_dict[key]}" "{value}" .
-            """
-    
-    # TODO: Verify if the query is correct
-            
-    # TODO: Add the code for the facades
-    
+        if key in mapping.mapping_dict and key != "euroregion":
+            if "dwellings" in key:
+                queryContent += f"""
+        {mapping.mapping_dict[key]} {value} ;"""
+            elif value.replace('.', '', 1).isdigit():
+                queryContent += f"""
+        {mapping.mapping_dict[key]} "{value}"^^xsd:double ;"""
+            else:
+                queryContent += f"""
+        {mapping.mapping_dict[key]} "{value}" ;"""
+                
+    queryContent += f"""
+        bldg:maxFacadeArea "{maxFacadeArea}"^^xsd:double ;
+        bldg:roofArea "{roofArea}"^^xsd:double ;
+        bldg:roofInsulation "{roofInsulation}" ."""
 
     query = f"""
-        {_get_prefix()}
+    {_get_prefix() + "PREFIX tst: <https://nobatek.inef4.com/renovation/test#>" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"}
 
-        INSERT DATA {{
-            {queryContent}
-        }}
+    INSERT DATA 
+    {{
+        {queryContent}
+    }}
     """
 
-    """
-    SPARQLInsert.setMethod('POST')
-    SPARQLInsert.setReturnFormat(JSON)
+    SPARQLInsert.method= 'POST'
     SPARQLInsert.setQuery(query)
     
     try:
         result = SPARQLInsert.query()
         return result
     except Exception as e:
-        print(f"⚠️  !!! Error executing SPARQL query: {e}")
-        return None"""
+        print(f"Error : Bad execution of the SPARQL query: {e}")
+        return None
 
 
 def get_baseline():
