@@ -25,9 +25,18 @@ def _get_prefix():
 def insert_data(data):
     mapping = Mapping()
 
+    try:
+        all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
+        for key in all_parameters:
+            if key not in data['data']['Parameters']:
+                raise Exception(f"Parameters {key} not found in the request body")
+            
+        if "Surfaces" not in data['data']:
+            raise Exception(f"Parameters surfaces not found in the request body")
+    except Exception as e:
+        print(f"Error 400 : {e}")
+        
     # Building
-    if "project_id" not in data['data'] or 'euroregion' not in data['data']['Parameters']:
-        raise Exception("Error 404 : Project ID or Parameters not found in the request body")
 
     queryContent = f"""
     tst:pjct{data['data']['project_id']} rdf:type proj:Project ;
@@ -42,8 +51,6 @@ def insert_data(data):
     """
 
     # Facades
-    if "Surfaces" not in data['data']:
-        raise Exception("Error 404 : Surfaces not found in the request body")
     
     facade_statements = []
     maxFacadeArea = 0
@@ -54,8 +61,6 @@ def insert_data(data):
         if surface['type'] == "wall":
             orientation = mapping.get_orientation(int(surface['orientation']))
             facade_area = float(surface['area'])
-            if "u.envelope" not in data['data']['Parameters']:
-                raise Exception("Error 404 : u.envelope not found in the request body")
             facade_statement = f"""
     tst:batiment-{data['data']['project_id']} bldg:hasFacade [
         bldg:area "{facade_area}"^^xsd:double ;
@@ -69,17 +74,11 @@ def insert_data(data):
                 maxFacadeArea = facade_area
         elif surface['type'] == "roof":
             roofArea = float(surface['area'])
-            if "u.roofs" not in data['data']['Parameters']:
-                raise Exception("Error 404 : u.roofs not found in the request body")
             roofInsulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
 
     queryContent += "".join(facade_statement for facade_statement in facade_statements)
 
     # Parameters
-    all_parameters = ["sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
-    for key in all_parameters:
-        if key not in data['data']['Parameters']:
-            raise Exception(f"Error 404 : {key} not found in the request body")
     
     queryContent += f"""
     tst:batiment-{data['data']['project_id']}"""
@@ -101,6 +100,8 @@ def insert_data(data):
         bldg:roofArea "{roofArea}"^^xsd:double ;
         bldg:roofInsulation "{roofInsulation}" ."""
 
+
+    # Query construction
     query = f"""
     {_get_prefix() + "PREFIX tst: <https://nobatek.inef4.com/renovation/test#>" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"}
 
@@ -109,12 +110,13 @@ def insert_data(data):
         {queryContent}
     }}
     """
-
+    
     SPARQLInsert.method= 'POST'
     SPARQLInsert.setQuery(query)
     
     try:
         result = SPARQLInsert.query()
+        print(f"Data inserted successfully !")
         return result
     except Exception as e:
         print(f"Error : Bad execution of the SPARQL query: {e}")

@@ -4,13 +4,13 @@ import base64
 import requests
 import flask
 from flask import jsonify
-import json
-import datetime
 from extract import insert_data
+from flask_httpauth import HTTPBasicAuth
 
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+auth = HTTPBasicAuth()
 
 
 def to_native_string(string, encoding="ascii"):
@@ -63,6 +63,11 @@ def get_technalia_data(project_id):
 #                                             API CALLS                                            #
 # ------------------------------------------------------------------------------------------------ #
 
+@auth.verify_password
+def verify_password(username, password):
+    if username == 'your_username' and password == 'your_password':
+        return True
+    return False
 
 @app.route('/nobatek/post_ensnaredata/<int:project_id>', methods=['POST'])
 def post_data(project_id):
@@ -74,6 +79,7 @@ def post_data(project_id):
         return jsonify({"status": "error", "message": str(e)}), 400
 
 @app.route('/tecnalia/<int:project_id>', methods=['GET'])
+@auth.login_required
 def get_data(project_id):
     return get_technalia_data(project_id)
 
