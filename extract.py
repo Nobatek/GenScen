@@ -25,6 +25,7 @@ def _get_prefix():
 def insert_data(data):
     mapping = Mapping()
 
+    # Check if the request body contains all the necessary parameters
     try:
         all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
         for key in all_parameters:
