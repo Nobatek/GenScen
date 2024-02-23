@@ -80,18 +80,15 @@ def insert_data(data):
     ] .
     """
             facade_statements.append(facade_statement)
-
             if facade_area > maxFacadeArea:
                 maxFacadeArea = facade_area
         # Type Roof
         elif surface['type'] == "roof":
             roofArea = float(surface['area'])
             roofInsulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
-
     queryContent += "".join(facade_statement for facade_statement in facade_statements)
 
     # Parameters
-    
     queryContent += f"""
     tst:batiment-{data['data']['project_id']}"""
 
@@ -113,9 +110,7 @@ def insert_data(data):
         bldg:roofArea "{roofArea}"^^xsd:double ;
         bldg:roofInsulation "{roofInsulation}" ."""
 
-
     # Query construction
-
     query = f"""
     {_get_prefix() + "PREFIX tst: <https://nobatek.inef4.com/renovation/test#>" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"}
 
@@ -130,12 +125,13 @@ def insert_data(data):
     return result.response.code
 
 
-def get_baseline():
+def get_baseline(project_id):
      query = f"""   
         {_get_prefix()}
 
         SELECT ?str_type_intv ?scen (group_concat(?str_intv; separator=" | ") as ?intvs) ?label WHERE {{
             ?scen a [rdfs:subClassOf* proj:BaselineScenario];
+                    proj:forProject [proj:id {project_id}] ;
                      rdfs:label ?label ;
                      proj:isMadeOf ?intv .
             ?intv intv:refines ?type_intv ;
@@ -146,12 +142,13 @@ def get_baseline():
      return _format_basic(_execute(query), "baseline")
 
 
-def get_nZeB():
+def get_nZeB(project_id):
     query = f"""   
         {_get_prefix()}
 
         SELECT ?str_type_intv ?scen (group_concat(?str_intv; separator=" | ") as ?intvs) ?label WHERE {{
             ?scen a [rdfs:subClassOf* proj:nZeBScenario];
+                    proj:forProject [proj:id {project_id}] ;
                      proj:isMadeOf ?intv ;
                      rdfs:label ?label .
             ?intv intv:refines ?type_intv ;
@@ -161,7 +158,7 @@ def get_nZeB():
         """
     return _format_basic(_execute(query), "nZeB")
 
-def get_Ensnare_Passive():
+def get_Ensnare_Passive(project_id):
     query = f"""   
         {_get_prefix()}
 
@@ -178,6 +175,7 @@ def get_Ensnare_Passive():
             BIND(concat(strafter(str(?intv_type), 'needed_'), '_', str(?orientation), ':', str(?surface)) as ?active_desc)
             {{SELECT ?scen_passive (group_concat(DISTINCT ?res; separator=" || ") as ?intvs_passive) ?lbl_passive {{
               ?scen_passive a [rdfs:subClassOf* proj:EnsnareScenario_Passive];
+                       proj:forProject [proj:id {project_id}] ;
                        a ?type ; proj:isMadeOf ?intv ;
                        rdfs:label ?lbl_passive .
               ?intv intv:refines ?type_intv ;

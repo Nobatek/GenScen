@@ -37,7 +37,7 @@ def _check_java():
 
 def main():
     print('----- EXTRACTING DATA----')
-    result = dict(**get_baseline(), **get_nZeB(), **get_Ensnare_Passive())
+    result = dict(**get_baseline(1234), **get_nZeB(1234), **get_Ensnare_Passive(1234))
     print(json.dumps(result))
 
 if __name__ == '__main__':
