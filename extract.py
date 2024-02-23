@@ -34,8 +34,18 @@ def insert_data(data):
             
         if "Surfaces" not in data['data']:
             raise Exception(f"Parameters surfaces not found in the request body")
+        else:
+            surfaceParameters = ["type", "orientation", "area", "name"]
+            for key in surfaceParameters:
+                for surface in data['data']['Surfaces']:
+                    if key not in surface:
+                        raise Exception(f"Parameters {key} not found in Surface {surface} in the request body")
+                    if surface["type"] == "roof":
+                        if "area.pv" not in surface:
+                            raise Exception(f"Parameter area.pv not found in Surface {surface} in the request body")
     except Exception as e:
         print(f"Error 400 : {e}")
+        return None
         
     # Building
 
