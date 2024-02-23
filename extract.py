@@ -3,7 +3,6 @@ import uuid
 from functools import reduce
 from SPARQLWrapper import SPARQLWrapper, JSON
 from mapping import Mapping
-import json
 
 SPARQLQuery = SPARQLWrapper(
     "http://localhost:3030/GenScen/query")
@@ -23,31 +22,31 @@ def _get_prefix():
     '''
 
 def insert_data(data):
-    mapping = Mapping()
+    """Function to insert the data into the SPARQL database."""
 
     # Check if the request body contains all the necessary parameters
-    try:
-        all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
-        for key in all_parameters:
-            if key not in data['data']['Parameters']:
-                raise Exception(f"Parameters {key} not found in the request body")
-            
-        if "Surfaces" not in data['data']:
-            raise Exception(f"Parameters surfaces not found in the request body")
-        else:
-            surfaceParameters = ["type", "orientation", "area", "name"]
-            for key in surfaceParameters:
-                for surface in data['data']['Surfaces']:
-                    if key not in surface:
-                        raise Exception(f"Parameters {key} not found in Surface {surface} in the request body")
-                    if surface["type"] == "roof":
-                        if "area.pv" not in surface:
-                            raise Exception(f"Parameter area.pv not found in Surface {surface} in the request body")
-    except Exception as e:
-        print(f"Error 400 : {e}")
-        return None
-        
+    # Check Parameters
+    all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
+    for key in all_parameters:
+        if key not in data['data']['Parameters']:
+            raise Exception(f"Parameters {key} not found in the request body")
+    
+    # Check Surfaces
+    if "Surfaces" not in data['data']:
+        raise Exception(f"Parameters surfaces not found in the request body")
+    else:
+        # Check if each surface contains the necessary parameters
+        surfaceParameters = ["type", "orientation", "area", "name"]
+        for key in surfaceParameters:
+            for surface in data['data']['Surfaces']:
+                if key not in surface:
+                    raise Exception(f"Parameters {key} not found in Surface {surface} in the request body")
+                if surface["type"] == "roof":
+                    if "area.pv" not in surface:
+                        raise Exception(f"Parameter area.pv not found in Surface {surface} in the request body")
+    
     # Building
+    mapping = Mapping()
 
     queryContent = f"""
     tst:pjct{data['data']['project_id']} rdf:type proj:Project ;
@@ -69,6 +68,7 @@ def insert_data(data):
     roofInsulation = 0
 
     for surface in data['data']['Surfaces']:
+        # Type Wall
         if surface['type'] == "wall":
             orientation = mapping.get_orientation(int(surface['orientation']))
             facade_area = float(surface['area'])
@@ -83,6 +83,7 @@ def insert_data(data):
 
             if facade_area > maxFacadeArea:
                 maxFacadeArea = facade_area
+        # Type Roof
         elif surface['type'] == "roof":
             roofArea = float(surface['area'])
             roofInsulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
@@ -96,6 +97,7 @@ def insert_data(data):
 
     for key, value in data['data']['Parameters'].items():
         if key in mapping.mapping_dict and key != "euroregion":
+            # Check if the value need to be a double, a string or an integer
             if "dwellings" in key:
                 queryContent += f"""
         {mapping.mapping_dict[key]} {value} ;"""
@@ -113,6 +115,7 @@ def insert_data(data):
 
 
     # Query construction
+
     query = f"""
     {_get_prefix() + "PREFIX tst: <https://nobatek.inef4.com/renovation/test#>" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"}
 
@@ -121,17 +124,10 @@ def insert_data(data):
         {queryContent}
     }}
     """
-    
     SPARQLInsert.method= 'POST'
     SPARQLInsert.setQuery(query)
-    
-    try:
-        result = SPARQLInsert.query()
-        print(f"Data inserted successfully !")
-        return result
-    except Exception as e:
-        print(f"Error : Bad execution of the SPARQL query: {e}")
-        return None
+    result = SPARQLInsert.query()
+    return result.response.code
 
 
 def get_baseline():

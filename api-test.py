@@ -2,13 +2,15 @@ from hashlib import sha512
 import time
 import base64
 import requests
-import flask
-from flask import jsonify
+from flask import Flask, jsonify, g
 from extract import insert_data
 from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
+from config import USERS
 
-
-app = flask.Flask(__name__)
+# App configuration
+app = Flask(__name__)
 app.config["DEBUG"] = True
 auth = HTTPBasicAuth()
 
@@ -44,6 +46,7 @@ def get_technalia_data(project_id):
     headers = {'Content-Type': 'application/json', 'Authorization': basic_auth, 'Timestamp': now}
     res = requests.get(url2, params=params, headers=headers)
 
+    # Manage the response
     if res.status_code == 200:
         return res.json()
     else:
@@ -59,29 +62,160 @@ def get_technalia_data(project_id):
         return switch.get(res.status_code, "Unknown Error")
 
 
-# ------------------------------------------------------------------------------------------------ #
-#                                             API CALLS                                            #
-# ------------------------------------------------------------------------------------------------ #
+# ---------------------------------------------------------------------------- #
+#                                      API                                     #
+# ---------------------------------------------------------------------------- #
 
-@auth.verify_password
-def verify_password(username, password):
-    if username == 'your_username' and password == 'your_password':
+
+# ---------------------------------- AUTHENTICATION ---------------------------------- #
+
+"""
+    @brief : Verify the password
+    @param : username : string : The username
+    @param : password : string : The password
+    @return : bool : The status of the password
+"""
+@auth.verify_password 
+def verify_password(username, password): 
+    user = USERS.get(username)
+    if user and check_password_hash(user.get('password'), password): 
+        g.user = username 
         return True
     return False
 
-@app.route('/nobatek/post_ensnaredata/<int:project_id>', methods=['POST'])
+
+"""
+    @brief : Error handler for the authentication
+    @return : json : The status of the request
+"""
+@auth.error_handler
+def unauthorized():
+    return jsonify({"status": "error", "message": "Wrong username or password"}), 401
+
+
+# Now we can user @role_required('admin') or @role_required('user') to protect the routes
+def role_required(role):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if g.user and USERS.get(g.user).get('role') == role:
+                return f(*args, **kwargs)
+            else:
+                return jsonify({"status": "error", "message": "You do not have permission to access this resource"}), 403
+        return decorated_function
+    return decorator
+
+
+# ---------------------------------- ROUTES ---------------------------------- #
+
+"""
+    @brief : Get the data from the Tecnalia API and insert it into the database
+    @param : project_id : int : The project id
+    @return : json : The status of the request
+"""
+@app.route('/nobatek/insert_data/<int:project_id>', methods=['POST'])
+@auth.login_required
+@role_required('admin')
 def post_data(project_id):
     try:
         data = get_technalia_data(project_id)
-        insert_data(data)
-        return jsonify({"status": "success", "message": "Data inserted successfully"}), 200
+        res = insert_data(data)
+        if res == 200:
+            return jsonify({"status": "success", "message": "Data inserted successfully"}), 200
+        else:
+            return jsonify({"status": "error", "message": "Data not inserted"}), 400
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 400
 
-@app.route('/tecnalia/<int:project_id>', methods=['GET'])
+
+"""
+    @brief : Get the data from the database
+    @param : project_id : int : The project id
+    @return : json : The data from the tecnalia database
+"""
+@app.route('/nobatek/get_data/<int:project_id>', methods=['GET'])
 @auth.login_required
+@role_required('admin')
 def get_data(project_id):
     return get_technalia_data(project_id)
+
+
+# ------------------------------ USER MANAGEMENT ----------------------------- #
+
+"""
+    @brief : Create a new user
+    @param : username : string : The username
+    @param : password : string : The password
+    @param : role : string : The role
+    @return : json : The status of the request
+"""
+@app.route('/nobatek/create_user/<string:username>/<string:password>/<string:role>', methods=['POST'])
+@auth.login_required
+@role_required('admin')
+def create_user(username, password, role):
+    try:
+        if username in USERS:
+            return jsonify({"status": "error", "message": "User already exists"}), 400
+        hashed_password = generate_password_hash(password)
+        USERS[username] = {'password': hashed_password, 'role': role}
+        with open('config.py', 'w') as file:
+            file.write("USERS = " + str(USERS))
+        return jsonify({"status": "success", "message": "User created successfully"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+
+
+"""
+    @brief : Delete a user
+    @param : username : string : The username
+    @return : json : The status of the request
+"""
+@app.route('/nobatek/delete_user/<string:username>', methods=['DELETE'])
+@auth.login_required
+@role_required('admin')
+def delete_user(username):
+    try:
+        if username not in USERS:
+            return jsonify({"status": "error", "message": "User does not exist"}), 400
+        USERS.pop(username)
+        with open('config.py', 'w') as file:
+            file.write("USERS = " + str(USERS))
+        return jsonify({"status": "success", "message": "User deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+    
+
+"""
+    @brief : Update a user
+    @param : username : string : The username
+    @param : password : string : The password
+    @param : role : string : The role
+    @return : json : The status of the request
+"""
+@app.route('/nobatek/update_user/<string:username>/<string:password>/<string:role>', methods=['PUT'])
+@auth.login_required
+@role_required('admin')
+def update_user(username, password, role):
+    try:
+        hashed_password = generate_password_hash(password)
+        USERS[username] = {'password': hashed_password, 'role': role}
+        with open('config.py', 'w') as file:
+            file.write("USERS = " + str(USERS))
+        return jsonify({"status": "success", "message": "User updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+    
+
+"""
+    @brief : Get all the users
+    @return : json : The users
+"""
+@app.route('/nobatek/get_users', methods=['GET'])
+@auth.login_required
+@role_required('admin')
+def get_users():
+    return jsonify(USERS)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
