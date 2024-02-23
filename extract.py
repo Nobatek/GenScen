@@ -2,10 +2,13 @@ import itertools
 import uuid
 from functools import reduce
 from SPARQLWrapper import SPARQLWrapper, JSON
+from mapping import Mapping
 
 SPARQLQuery = SPARQLWrapper(
     "http://localhost:3030/GenScen/query")
 SPARQLRemove = SPARQLWrapper(
+    "http://localhost:3030/GenScen/update")
+SPARQLInsert = SPARQLWrapper(
     "http://localhost:3030/GenScen/update")
 
 
@@ -17,6 +20,115 @@ def _get_prefix():
     PREFIX bldg: <https://nobatek.inef4.com/renovation/building#>
     PREFIX intv: <https://nobatek.inef4.com/renovation/intervention#>
     '''
+
+def insert_data(data):
+    """Function to insert the data into the SPARQL database."""
+
+    # Check if the request body contains all the necessary parameters
+    # Check Parameters
+    all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
+    for key in all_parameters:
+        if key not in data['data']['Parameters']:
+            raise Exception(f"Parameters {key} not found in the request body")
+    
+    # Check Surfaces
+    if "Surfaces" not in data['data']:
+        raise Exception(f"Parameters surfaces not found in the request body")
+    else:
+        # Check if each surface contains the necessary parameters
+        surfaceParameters = ["type", "orientation", "area", "name"]
+        for key in surfaceParameters:
+            for surface in data['data']['Surfaces']:
+                if key not in surface:
+                    raise Exception(f"Parameters {key} not found in Surface {surface} in the request body")
+                if surface["type"] == "roof":
+                    if "area.pv" not in surface:
+                        raise Exception(f"Parameter area.pv not found in Surface {surface} in the request body")
+    
+    # Building
+    mapping = Mapping()
+
+    queryContent = f"""
+    tst:pjct{data['data']['project_id']} rdf:type proj:Project ;
+        {mapping.mapping_dict['project_id']} {data['data']['project_id']} ;
+        {mapping.mapping_dict['euroregion']} proj:{mapping.get_euroregion_name(data['data']['Parameters']['euroregion'])} .
+
+    tst:batiment-{data['data']['project_id']} rdf:type bldg:Building .
+
+    tst:pjct{data['data']['project_id']} proj:building tst:batiment-{data['data']['project_id']} ;
+        proj:targetThermal 1.0, 0.7, 0.5, 0.3 ;
+        proj:targetElectricity 1.0, 0.7, 0.5, 0.3 .
+    """
+
+    # Facades
+    
+    facade_statements = []
+    maxFacadeArea = 0
+    roofArea = 0
+    roofInsulation = 0
+
+    for surface in data['data']['Surfaces']:
+        # Type Wall
+        if surface['type'] == "wall":
+            orientation = mapping.get_orientation(int(surface['orientation']))
+            facade_area = float(surface['area'])
+            facade_statement = f"""
+    tst:batiment-{data['data']['project_id']} bldg:hasFacade [
+        bldg:area "{facade_area}"^^xsd:double ;
+        bldg:orientation "{orientation}" ;
+        bldg:facadeInsulation "{mapping.get_level(float(data['data']['Parameters']['u.envelope']))}" ;
+    ] .
+    """
+            facade_statements.append(facade_statement)
+
+            if facade_area > maxFacadeArea:
+                maxFacadeArea = facade_area
+        # Type Roof
+        elif surface['type'] == "roof":
+            roofArea = float(surface['area'])
+            roofInsulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
+
+    queryContent += "".join(facade_statement for facade_statement in facade_statements)
+
+    # Parameters
+    
+    queryContent += f"""
+    tst:batiment-{data['data']['project_id']}"""
+
+    for key, value in data['data']['Parameters'].items():
+        if key in mapping.mapping_dict and key != "euroregion":
+            # Check if the value need to be a double, a string or an integer
+            if "dwellings" in key:
+                queryContent += f"""
+        {mapping.mapping_dict[key]} {value} ;"""
+            elif value.replace('.', '', 1).isdigit():
+                queryContent += f"""
+        {mapping.mapping_dict[key]} "{value}"^^xsd:double ;"""
+            else:
+                queryContent += f"""
+        {mapping.mapping_dict[key]} "{value}" ;"""
+                
+    queryContent += f"""
+        bldg:maxFacadeArea "{maxFacadeArea}"^^xsd:double ;
+        bldg:roofArea "{roofArea}"^^xsd:double ;
+        bldg:roofInsulation "{roofInsulation}" ."""
+
+
+    # Query construction
+
+    query = f"""
+    {_get_prefix() + "PREFIX tst: <https://nobatek.inef4.com/renovation/test#>" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"}
+
+    INSERT DATA 
+    {{
+        {queryContent}
+    }}
+    """
+    SPARQLInsert.method= 'POST'
+    SPARQLInsert.setQuery(query)
+    result = SPARQLInsert.query()
+    return result.response.code
+
 
 def get_baseline():
      query = f"""   
@@ -168,4 +280,3 @@ def remove_data():
     SPARQLRemove.setMethod('POST')
     SPARQLRemove.setQuery('CLEAR ALL')
     return SPARQLRemove.query()
-

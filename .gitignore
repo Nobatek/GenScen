@@ -3,3 +3,5 @@ OLD/*
 Jena/*
 Documentation/*
 TestProject*
+__pycache__/*
+config.py
