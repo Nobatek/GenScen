@@ -4,7 +4,7 @@ import os
 import sys
 import json
 
-from extract import get_baseline, get_nZeB, get_Ensnare_Passive
+from extract import get_baseline, get_nZeB, get_Ensnare_Passive, remove_data
 
 #def _upload_to_jena(self, pathfile):
 #    ttl_data = open(pathfile).read()
@@ -39,6 +39,11 @@ def main():
     print('----- EXTRACTING DATA----')
     result = dict(**get_baseline(1234), **get_nZeB(1234), **get_Ensnare_Passive(1234))
     print(json.dumps(result))
+
+    remove_data(1234)
+    result = dict(**get_baseline(1234), **get_nZeB(1234), **get_Ensnare_Passive(1234))
+    print(json.dumps(result))
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 1:

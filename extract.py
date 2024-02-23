@@ -273,8 +273,23 @@ def _format_active(intvs_active, description):
         facades[facade][system+'_area'] = float(surface)
     return facades
 
-def remove_data():
+def remove_data(project_id):
     SPARQLRemove.setReturnFormat(JSON)
     SPARQLRemove.setMethod('POST')
-    SPARQLRemove.setQuery('CLEAR ALL')
+    SPARQLRemove.setQuery(f"""
+        {_get_prefix()}
+        
+        delete {{
+          ?proj ?pred ?obj .
+          ?bldg ?pred_ ?obj_ .
+          ?fcd ?pred__ ?ojb__ .
+        }}
+        where {{
+            ?proj proj:id {project_id} ;
+                proj:building ?bldg .
+            ?bldg bldg:hasFacade ?fcd .
+            ?proj ?pred ?obj .
+            ?bldg ?pred_ ?obj_ .
+            ?fcd ?pred__ ?ojb__ .
+        }}""")
     return SPARQLRemove.query()
