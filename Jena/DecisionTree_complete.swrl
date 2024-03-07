@@ -5,14 +5,9 @@
 @prefix proj: <https://nobatek.inef4.com/renovation/project#> .
 @prefix bldg: <https://nobatek.inef4.com/renovation/building#> .
 @prefix intv: <https://nobatek.inef4.com/renovation/intervention#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
 
 ### Preliminary computations
-
-## 0. Cascading the 'refines' relation
-[trans-refines:
-    (?interv1 intv:refines ?a) (?interv2 rdfs:subClassOf ?interv1)
--> (?interv2 intv:refines ?a)]
 
 ## 1. Compute Roof/Façade ratio
 [facade_vs_roof:
@@ -35,11 +30,9 @@
 # OLD: product(4183.2, ?diff_temp_dhw, ?energy_need_per_vol)===> en kJ!!!
 ## 2.a. Computes the monthly energy target for a ST installation, considering 70% of the global need will be covered
 [dhw_need_solar:
-    (?p rdf:type proj:Project)
-    (?p proj:targetThermal ?target_thermal)
-    (?p proj:building ?bldg) (?bldg bldg:dhw_energy_need ?daily_energy_need)
-    product(?daily_energy_need, ?target_thermal, ?daily_energy_st_target)
-    product(?daily_energy_need, 31, ?monthly_energy_st_target)
+    (?bldg bldg:dhw_energy_need ?daily_energy_need)
+    product(?daily_energy_need, 0.7, ?daily_energy_st_target)
+    product(?daily_energy_st_target, 31, ?monthly_energy_st_target)
 -> (?bldg bldg:dhw_energy_need_st ?monthly_energy_st_target)
 ]
 ## 2.b. Computes the ratio of Monthly DHW need per Solar Radiance, considering the minimal radiance for the region.
@@ -73,7 +66,7 @@
 ]
 [solar_radiance_ensnare_southEW:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-    (?bldg bldg:hasFacade ?fcd_SW) (?fcd_SW bldg:orientation 'South West')
+    (?bldg bldg:hasFacade ?fcd_SE) (?fcd_SE bldg:orientation 'South East')
     (?p proj:radiance ?radiance) product(?radiance, 0.67, ?proj_radiance)
 -> (?p proj:radiance_SEW ?proj_radiance)
 ]
@@ -162,7 +155,7 @@
 [base_scen:
     (?p rdf:type proj:Project)
     makeTemp(?base)
--> (?base proj:forProject ?p) (?base rdf:type proj:BaselineScenario) (?base rdfs:label "Baseline Scenario")]
+-> (?base proj:forProject ?p) (?base rdf:type proj:BaselineScenario) ]
 
 [base_facade1:
     (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
@@ -182,17 +175,17 @@
 
 [base_roof1:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-	(?bldg  bldg:roofInsulation "None")
+	(?fcd  bldg:roofInsulation "None")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:BaselineScenario)
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_22cm)]
 [base_roof2:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-	(?bldg  bldg:roofInsulation "Low")
+	(?fcd  bldg:roofInsulation "Low")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:BaselineScenario)
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_15cm)]
 [base_roof3:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-	(?bldg  bldg:roofInsulation "Medium")
+	(?fcd  bldg:roofInsulation "Medium")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:BaselineScenario)
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_10cm)]
 
@@ -208,7 +201,7 @@
 [nzeb_scen:
     (?p rdf:type proj:Project)
     makeTemp(?nZeb)
--> (?nZeb proj:forProject ?p) (?nZeb rdf:type proj:nZeBScenario) (?nZeb rdfs:label "Positive Scenario")]
+-> (?nZeb proj:forProject ?p) (?nZeb rdf:type proj:nZeBScenario) ]
 
 [nzeb_facade1:
     (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
@@ -228,17 +221,17 @@
 
 [nzeb_roof1:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-	(?bldg  bldg:roofInsulation "None")
+	(?fcd  bldg:roofInsulation "None")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:nZeBScenario)
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_60cm)]
 [nzeb_roof2:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-	(?bldg  bldg:roofInsulation "Low")
+	(?fcd  bldg:roofInsulation "Low")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:nZeBScenario)
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_45cm)]
 [nzeb_roof3:
     (?p rdf:type proj:Project) (?p proj:building ?bldg)
-	(?bldg  bldg:roofInsulation "Medium")
+	(?fcd  bldg:roofInsulation "Medium")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:nZeBScenario)
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_30cm)]
 
@@ -255,13 +248,12 @@
     (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
 	(?fcd  bldg:facadeInsulation "None") (?fcd bldg:orientation ?orientation) regex(?orientation, '(North)(.*)')
 	makeTemp(?scen_high) makeTemp(?scen_medium) makeTemp(?scen_low)
--> (?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High) (?scen_high rdfs:label "High insulation")
-   (?scen_medium proj:forProject ?p) (?scen_medium rdf:type proj:EnsnareScenario_Passive_Medium) (?scen_medium rdfs:label "Medium insulation")
-   (?scen_low proj:forProject ?p) (?scen_low rdf:type proj:EnsnareScenario_Passive_Low) (?scen_low rdfs:label "Low insulation")
-   (?scen_low proj:isMadeOf intv:ENSNARE_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_30cm)
-#	(?scen_low proj:isMadeOf intv:ENSNARE_PVC_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_PVC_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_PVC_30cm)
-#	(?scen_low proj:isMadeOf intv:ENSNARE_Mineral_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Mineral_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Mineral_30cm)
-#	(?scen_low proj:isMadeOf intv:ENSNARE_Biosourced_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Biosourced_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_30cm)
+-> (?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High)
+   (?scen_medium proj:forProject ?p) (?scen_medium rdf:type proj:EnsnareScenario_Passive_Medium)
+   (?scen_low proj:forProject ?p) (?scen_low rdf:type proj:EnsnareScenario_Passive_Low)
+	(?scen_low proj:isMadeOf intv:ENSNARE_PVC_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_PVC_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_PVC_30cm)
+	(?scen_low proj:isMadeOf intv:ENSNARE_Mineral_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Mineral_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Mineral_30cm)
+	(?scen_low proj:isMadeOf intv:ENSNARE_Biosourced_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Biosourced_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_30cm)
 ]
 # [ensnare_facade_none2:
 #    (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
@@ -277,13 +269,12 @@
     (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
 	(?fcd  bldg:facadeInsulation "Low") (?fcd bldg:orientation ?orientation) regex(?orientation, '(North)(.*)')
 	makeTemp(?scen_high) makeTemp(?scen_medium) makeTemp(?scen_low)
--> (?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High) (?scen_high rdfs:label "High insulation")
-   (?scen_medium proj:forProject ?p) (?scen_medium rdf:type proj:EnsnareScenario_Passive_Medium) (?scen_medium rdfs:label "Medium insulation")
-   (?scen_low proj:forProject ?p) (?scen_low rdf:type proj:EnsnareScenario_Passive_Low) (?scen_low rdfs:label "Low insulation")
-   (?scen_low proj:isMadeOf intv:ENSNARE_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_30cm)
-#	(?scen_low proj:isMadeOf intv:ENSNARE_PVC_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_PVC_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_PVC_30cm)
-#	(?scen_low proj:isMadeOf intv:ENSNARE_Mineral_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Mineral_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Mineral_30cm)
-#	(?scen_low proj:isMadeOf intv:ENSNARE_Biosourced_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Biosourced_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_30cm)
+-> (?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High)
+   (?scen_medium proj:forProject ?p) (?scen_medium rdf:type proj:EnsnareScenario_Passive_Medium)
+   (?scen_low proj:forProject ?p) (?scen_low rdf:type proj:EnsnareScenario_Passive_Low)
+	(?scen_low proj:isMadeOf intv:ENSNARE_PVC_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_PVC_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_PVC_30cm)
+	(?scen_low proj:isMadeOf intv:ENSNARE_Mineral_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Mineral_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Mineral_30cm)
+	(?scen_low proj:isMadeOf intv:ENSNARE_Biosourced_10cm) (?scen_medium proj:isMadeOf intv:ENSNARE_Biosourced_20cm) (?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_30cm)
 ]
 #[ensnare_facade_low2:
 #    (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
@@ -299,12 +290,11 @@
     (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
 	(?fcd  bldg:facadeInsulation "Medium") (?fcd bldg:orientation ?orientation) regex(?orientation, '(North)(.*)')
 	makeTemp(?scen_high) makeTemp(?scen_medium)
--> (?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High) (?scen_high rdfs:label "High insulation")
-   (?scen_medium proj:forProject ?p) (?scen_medium rdf:type proj:EnsnareScenario_Passive_Medium) (?scen_medium rdfs:label "Medium insulation")
-   (?scen_medium proj:isMadeOf intv:ENSNARE_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_20cm)
-#	(?scen_medium proj:isMadeOf intv:ENSNARE_PVC_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_PVC_20cm)
-#	(?scen_medium proj:isMadeOf intv:ENSNARE_Mineral_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_Mineral_20cm)
-#	(?scen_medium proj:isMadeOf intv:ENSNARE_Biosourced_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_20cm)
+-> (?scen_medium proj:forProject ?p) (?scen_medium rdf:type proj:EnsnareScenario_Passive_Medium)
+	(?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High)
+	(?scen_medium proj:isMadeOf intv:ENSNARE_PVC_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_PVC_20cm)
+	(?scen_medium proj:isMadeOf intv:ENSNARE_Mineral_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_Mineral_20cm)
+	(?scen_medium proj:isMadeOf intv:ENSNARE_Biosourced_10cm) (?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_20cm)
 ]
 #[ensnare_facade_medium2:
 #    (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
@@ -343,7 +333,7 @@
 	(?scen proj:forProject ?p) (?scen rdf:type proj:nZeBScenario)
 -> (?scen proj:isMadeOf intv:DualFlowVentilation)]
 [nZeB_pv:
-	(?p rdf:type proj:Project)
+	(?p rdf:type proj:Project) 
 	(?scen proj:forProject ?p) (?scen rdf:type proj:nZeBScenario)
 	(?p proj:building ?bldg) (?bldg ratioPV_Roof ?val)
 	difference(1., ?val, ?v)
@@ -367,10 +357,6 @@
 [trans_ensnare_dhw:
 	(?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:st_needed_surface ?st_needed_surface)
 -> (?p proj:st_needed_surface ?st_needed_surface)
-]
-[trans_ensnare_dhw-2:
-	(?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:pvt_thermal_needed_surface ?pvt_thermal_needed_surface)
--> (?p proj:pvt_thermal_needed_surface ?pvt_thermal_needed_surface)
 ]
 [trans_ensnare_climate:
 	(?p rdf:type proj:Project) (?p proj:location ?eu_region)
@@ -411,12 +397,10 @@
 
 [winterRadHeatNeed:
     (?p rdf:type proj:Project)  (?scen proj:forProject ?p)
-    (?p proj:targetElectricity ?targetElec)
     (?p proj:winterRadiance ?winterRadMonth) product(?winterRadMonth, 4, ?winterRad)
     (?scen rdf:type ?type) (?type rdfs:subClassOf proj:EnsnareScenario_Passive)
     (?scen proj:isMadeOf ?heat_pump) (?heat_pump rdfs:subClassOf intv:HeatPump) (?heat_pump intv:COP ?coeffPerf)
-    (?scen proj:yHeatNeed ?hNeedMax) product(?hNeedMax, ?targetElec, ?hNeedPerM2)
-    (?p proj:building ?bldg) (?bldg bldg:livingArea ?surface) product(?hNeedPerM2, ?surface, ?hNeed)
+    (?scen proj:yHeatNeed ?hNeedPerM2) (?p proj:building ?bldg) (?bldg bldg:livingArea ?surface) product(?hNeedPerM2, ?surface, ?hNeed)
     quotient(?hNeed, ?coeffPerf, ?pvEnNeed) quotient(?pvEnNeed, 0.97, ?pvNeed_NoInverter)
     quotient(?pvNeed_NoInverter, ?winterRad, ?enNeedPV)
 -> (?scen proj:yHeatNeed_PV ?enNeedPV)
@@ -465,7 +449,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?south_fcd_st) makeTemp(?south_fcd_pv) makeTemp(?west_fcd)
-->  (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - resell PV")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_st rdf:type intv:Facade_needed_ST) (?south_fcd_st intv:facade ?fcd_S) (?south_fcd_st intv:scenario ?scen) (?south_fcd_st intv:needed_surface ?st_needed_surface_south)
 	(?south_fcd_pv rdf:type intv:Facade_needed_PV) (?south_fcd_pv intv:facade ?fcd_S) (?south_fcd_pv intv:scenario ?scen) (?south_fcd_pv intv:needed_surface ?S_PV_area)
 	(?west_fcd rdf:type intv:Facade_needed_PV) (?west_fcd intv:facade ?fcd_W) (?west_fcd intv:scenario ?scen) (?west_fcd intv:needed_surface ?W_area)
@@ -483,7 +467,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?south_fcd) makeTemp(?west_fcd_st) makeTemp(?west_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - resell PV")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd rdf:type intv:Facade_needed_ST) (?south_fcd intv:facade ?fcd_S) (?south_fcd intv:scenario ?scen) (?south_fcd intv:needed_surface ?S_area)
 	(?west_fcd_st rdf:type intv:Facade_needed_ST) (?west_fcd_st intv:facade ?fcd_W) (?west_fcd_st intv:scenario ?scen) (?west_fcd_st intv:needed_surface ?west_ST_area_needed)
 	(?west_fcd_pv rdf:type intv:Facade_needed_PV) (?west_fcd_pv intv:facade ?fcd_W) (?west_fcd_pv intv:scenario ?scen) (?west_fcd_pv intv:needed_surface ?W_PV_area)
@@ -501,7 +485,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?south_fcd) makeTemp(?west_fcd_st)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - resell PV")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd rdf:type intv:Facade_needed_ST) (?south_fcd intv:facade ?fcd_S) (?south_fcd intv:scenario ?scen) (?south_fcd intv:needed_surface ?S_area)
 	(?west_fcd_st rdf:type intv:Facade_needed_ST) (?west_fcd_st intv:facade ?fcd_W) (?west_fcd_st intv:scenario ?scen) (?west_fcd_st intv:needed_surface ?W_area)
 ]
@@ -520,7 +504,7 @@
 	makeTemp(?se_fcd_st) makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_st) makeTemp(?sw_fcd_pv)
 	product(?st_needed_SEW_surface, ?SW_S_area, ?SW_ST_area) product(?st_needed_SEW_surface, ?SE_S_area, ?SE_ST_area)
 	product(?S_PV_total_area, ?SW_S_area, ?SW_PV_area) product(?S_PV_total_area, ?SE_S_area, ?SE_PV_area)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - resell PV")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_st rdf:type intv:Facade_needed_ST) (?se_fcd_st intv:facade ?fcd_SE) (?se_fcd_st intv:scenario ?scen) (?se_fcd_st intv:needed_surface ?SE_ST_area)
 	(?sw_fcd_st rdf:type intv:Facade_needed_ST) (?sw_fcd_st intv:facade ?fcd_SW) (?sw_fcd_st intv:scenario ?scen) (?sw_fcd_st intv:needed_surface ?SW_ST_area)
 	(?se_fcd_pv rdf:type intv:Facade_needed_PV) (?se_fcd_pv intv:facade ?fcd_SE) (?se_fcd_pv intv:scenario ?scen) (?se_fcd_pv intv:needed_surface ?SE_PV_area)
@@ -537,7 +521,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?se_fcd_st) makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_st) makeTemp(?sw_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - resell PV")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_st rdf:type intv:Facade_needed_ST) (?se_fcd_st intv:facade ?fcd_SE) (?se_fcd_st intv:scenario ?scen) (?se_fcd_st intv:needed_surface ?S_SE_area)
 	(?sw_fcd_st rdf:type intv:Facade_needed_ST) (?sw_fcd_st intv:facade ?fcd_SW) (?sw_fcd_st intv:scenario ?scen) (?sw_fcd_st intv:needed_surface ?S_SW_area)
 ]
@@ -563,7 +547,7 @@
 	min(?EW_PV_remaning, ?EW_area, ?EW_PV_area) product(?EW_PV_area, ?E_ratio, ?E_PV_area) product(?EW_PV_area, ?W_ratio, ?W_PV_area)
 	makeTemp(?scen)
 	makeTemp(?south_fcd_st) makeTemp(?south_fcd_pv) makeTemp(?west_fcd) makeTemp(?east_fcd)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - PV support Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_st rdf:type intv:Facade_needed_ST) (?south_fcd_st intv:facade ?fcd_S) (?south_fcd_st intv:scenario ?scen) (?south_fcd_st intv:needed_surface ?st_needed_surface_south)
 	(?south_fcd_pv rdf:type intv:Facade_needed_PV) (?south_fcd_pv intv:facade ?fcd_S) (?south_fcd_pv intv:scenario ?scen) (?south_fcd_pv intv:needed_surface ?S_PV_area)
 	(?west_fcd rdf:type intv:Facade_needed_PV) (?west_fcd intv:facade ?fcd_W) (?west_fcd intv:scenario ?scen) (?west_fcd intv:needed_surface ?W_PV_area)
@@ -589,7 +573,7 @@
 	product(?EW_ST_area_needed, ?E_ratio, ?E_ST_area) product(?EW_ST_area_needed, ?W_ratio, ?W_ST_area)
 	makeTemp(?scen)
 	makeTemp(?south_fcd) makeTemp(?west_fcd_st) makeTemp(?east_fcd_st) makeTemp(?west_fcd_pv) makeTemp(?east_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - PV support Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd rdf:type intv:Facade_needed_ST) (?south_fcd intv:facade ?fcd_S) (?south_fcd intv:scenario ?scen) (?south_fcd intv:needed_surface ?S_area)
 	(?west_fcd_st rdf:type intv:Facade_needed_ST) (?west_fcd_st intv:facade ?fcd_W) (?west_fcd_st intv:scenario ?scen) (?west_fcd_st intv:needed_surface ?W_ST_area)
 	(?west_fcd_pv rdf:type intv:Facade_needed_PV) (?west_fcd_pv intv:facade ?fcd_W) (?west_fcd_pv intv:scenario ?scen) (?west_fcd_pv intv:needed_surface ?W_PV_area)
@@ -611,7 +595,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?south_fcd) makeTemp(?west_fcd_st) makeTemp(?east_fcd_st)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - PV support Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd rdf:type intv:Facade_needed_ST) (?south_fcd intv:facade ?fcd_S) (?south_fcd intv:scenario ?scen) (?south_fcd intv:needed_surface ?S_area)
 	(?west_fcd_st rdf:type intv:Facade_needed_ST) (?west_fcd_st intv:facade ?fcd_W) (?west_fcd_st intv:scenario ?scen) (?west_fcd_st intv:needed_surface ?W_area)
 	(?east_fcd_st rdf:type intv:Facade_needed_ST) (?east_fcd_st intv:facade ?fcd_E) (?east_fcd_st intv:scenario ?scen) (?east_fcd_st intv:needed_surface ?E_area)
@@ -635,7 +619,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?se_fcd_st) makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_st) makeTemp(?sw_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - PV support Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_st rdf:type intv:Facade_needed_ST) (?se_fcd_st intv:facade ?fcd_SE) (?se_fcd_st intv:scenario ?scen) (?se_fcd_st intv:needed_surface ?SE_ST_area)
 	(?sw_fcd_st rdf:type intv:Facade_needed_ST) (?sw_fcd_st intv:facade ?fcd_SW) (?sw_fcd_st intv:scenario ?scen) (?sw_fcd_st intv:needed_surface ?SW_ST_area)
 	(?se_fcd_pv rdf:type intv:Facade_needed_PV) (?se_fcd_pv intv:facade ?fcd_SE) (?se_fcd_pv intv:scenario ?scen) (?se_fcd_pv intv:needed_surface ?SE_PV_area)
@@ -652,7 +636,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?se_fcd_st) makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_st) makeTemp(?sw_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority: ST for DHW - PV support Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_st rdf:type intv:Facade_needed_ST) (?se_fcd_st intv:facade ?fcd_SE) (?se_fcd_st intv:scenario ?scen) (?se_fcd_st intv:needed_surface ?SE_area)
 	(?sw_fcd_st rdf:type intv:Facade_needed_ST) (?sw_fcd_st intv:facade ?fcd_SW) (?sw_fcd_st intv:scenario ?scen) (?sw_fcd_st intv:needed_surface ?SW_area)
 ]
@@ -666,7 +650,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?south_fcd) makeTemp(?west_fcd)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "All PV resell")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd rdf:type intv:Facade_needed_PV) (?south_fcd intv:facade ?fcd_S) (?south_fcd intv:scenario ?scen) (?south_fcd intv:needed_surface ?S_area)
 ]
 
@@ -675,12 +659,12 @@
 	(?p rdf:type proj:Project) (?p proj:building ?bldg)
 	(?bldg bldg:hasFacade ?fcd_S) (?fcd_S bldg:orientation 'South') (?fcd_S bldg:area ?S_area)
 	(?bldg bldg:hasFacade ?fcd_W) (?fcd_W bldg:orientation 'West') (?fcd_W bldg:area ?W_area)
-	(?bldg bldg:hasFacade ?fcd_E) (?fcd_E bldg:orientation 'East') (?fcd_E bldg:area ?E_area)
+	(?bldg bldg:hasFacade ?fcd_E) (?fcd_E bldg:orientation 'East') (?fcd_W bldg:area ?E_area)
 
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?south_fcd) makeTemp(?west_fcd) makeTemp(?east_fcd)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "All PV resell")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd rdf:type intv:Facade_needed_PV) (?south_fcd intv:facade ?fcd_S) (?south_fcd intv:scenario ?scen) (?south_fcd intv:needed_surface ?S_area)
 	(?west_fcd rdf:type intv:Facade_needed_PV) (?west_fcd intv:facade ?fcd_W) (?west_fcd intv:scenario ?scen) (?west_fcd intv:needed_surface ?W_area)
 	(?east_fcd rdf:type intv:Facade_needed_PV) (?east_fcd intv:facade ?fcd_E) (?east_fcd intv:scenario ?scen) (?east_fcd intv:needed_surface ?E_area)
@@ -694,7 +678,7 @@
 	(?scen_passive proj:forProject ?p) (?scen_passive rdf:type ?t) (?t rdfs:subClassOf proj:EnsnareScenario_Passive)
 	makeTemp(?scen)
 	makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "All PV resell")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_pv rdf:type intv:Facade_needed_PV) (?se_fcd_pv intv:facade ?fcd_SE) (?se_fcd_pv intv:scenario ?scen) (?se_fcd_pv intv:needed_surface ?SE_area)
 	(?sw_fcd_pv rdf:type intv:Facade_needed_PV) (?sw_fcd_pv intv:facade ?fcd_SW) (?sw_fcd_pv intv:scenario ?scen) (?sw_fcd_pv intv:needed_surface ?SW_area)
 ]
@@ -715,7 +699,7 @@
 	le(?st_surface, ?S_ST_avail)
 	makeTemp(?scen)
 	makeTemp(?south_fcd_st) makeTemp(?south_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PV on Heating/cooling - ST for DHW")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pv rdf:type intv:Facade_needed_PV) (?south_fcd_pv intv:facade ?fcd_S) (?south_fcd_pv intv:scenario ?scen) (?south_fcd_pv intv:needed_surface ?PV_surfaceNeed_S)
 	(?south_fcd_st rdf:type intv:Facade_needed_ST) (?south_fcd_st intv:facade ?fcd_S) (?south_fcd_st intv:scenario ?scen) (?south_fcd_st intv:needed_surface ?st_surface)
 ]
@@ -742,7 +726,7 @@
 	product(?EW_ST_surface, ?W_EW_area, ?W_ST_surface) product(?EW_ST_surface, ?E_EW_area, ?E_ST_surface)
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pv) makeTemp(?west_fcd_pv) makeTemp(?west_fcd_pv) makeTemp(?west_fcd_st) makeTemp(?west_fcd_st)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PV on Heating/cooling - ST for DHW")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pv rdf:type intv:Facade_needed_PV) (?south_fcd_pv intv:facade ?fcd_S) (?south_fcd_pv intv:scenario ?scen) (?south_fcd_pv intv:needed_surface ?S_area)
 	(?west_fcd_pv rdf:type intv:Facade_needed_PV) (?west_fcd_pv intv:facade ?fcd_W) (?west_fcd_pv intv:scenario ?scen) (?west_fcd_pv intv:needed_surface ?W_PV_surface)
 	(?west_fcd_st rdf:type intv:Facade_needed_ST) (?west_fcd_st intv:facade ?fcd_W) (?west_fcd_st intv:scenario ?scen) (?west_fcd_st intv:needed_surface ?W_ST_surface)
@@ -770,7 +754,7 @@
 
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pv) makeTemp(?west_fcd_pv) makeTemp(?west_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PV on Heating/cooling - ST for DHW")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pv rdf:type intv:Facade_needed_PV) (?south_fcd_pv intv:facade ?fcd_S) (?south_fcd_pv intv:scenario ?scen) (?south_fcd_pv intv:needed_surface ?PV_surfaceNeed_S)
 	(?south_fcd_st rdf:type intv:Facade_needed_ST) (?south_fcd_st intv:facade ?fcd_S) (?south_fcd_st intv:scenario ?scen) (?south_fcd_st intv:needed_surface ?S_ST_avail)
 	(?west_fcd_st rdf:type intv:Facade_needed_ST) (?west_fcd_st intv:facade ?fcd_W) (?west_fcd_st intv:scenario ?scen) (?west_fcd_st intv:needed_surface ?W_ST_surface)
@@ -796,7 +780,7 @@
 	product(?surfST, ?SW_ratio, ?SW_ST_area) product(?surfST, ?SE_ratio, ?SE_ST_area)
 	makeTemp(?scen)
 	makeTemp(?se_fcd_st) makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_st) makeTemp(?sw_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PV on Heating/cooling - ST for DHW")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_pv rdf:type intv:Facade_needed_PV) (?se_fcd_pv intv:facade ?fcd_SE) (?se_fcd_pv intv:scenario ?scen) (?se_fcd_pv intv:needed_surface ?SE_PV_area)
 	(?se_fcd_st rdf:type intv:Facade_needed_ST) (?se_fcd_st intv:facade ?fcd_SE) (?se_fcd_st intv:scenario ?scen) (?se_fcd_st intv:needed_surface ?SE_ST_area)
 	(?sw_fcd_pv rdf:type intv:Facade_needed_PV) (?sw_fcd_pv intv:facade ?fcd_SW) (?sw_fcd_pv intv:scenario ?scen) (?sw_fcd_pv intv:needed_surface ?SW_PV_area)
@@ -816,7 +800,7 @@
 
 	makeTemp(?scen)
 	makeTemp(?se_fcd_pv) makeTemp(?sw_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PV on Heating/cooling - ST for DHW")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_pv rdf:type intv:Facade_needed_PV) (?se_fcd_pv intv:facade ?fcd_SE) (?se_fcd_pv intv:scenario ?scen) (?se_fcd_pv intv:needed_surface ?SE_area)
 	(?sw_fcd_pv rdf:type intv:Facade_needed_PV) (?sw_fcd_pv intv:facade ?fcd_SW) (?sw_fcd_pv intv:scenario ?scen) (?sw_fcd_pv intv:needed_surface ?SW_area)
 ]
@@ -841,7 +825,7 @@
 
 	makeTemp(?scen)
 	makeTemp(?south_fcd_st) makeTemp(?south_fcd_pvt)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on Heating/cooling - Try to complete ST for DHW if needed")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?surfPV)
 	(?south_fcd_st rdf:type intv:Facade_needed_ST) (?south_fcd_st intv:facade ?fcd_S) (?south_fcd_st intv:scenario ?scen) (?south_fcd_st intv:needed_surface ?surfST_needed)
 ]
@@ -872,7 +856,7 @@
 
 	makeTemp(?scen)
 	makeTemp(?south_fcd_st) makeTemp(?south_fcd_pvt) makeTemp(?east_fcd_st) makeTemp(?west_fcd_st)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on Heating/cooling - Try to complete ST for DHW if needed")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?surfPV)
 	(?south_fcd_st rdf:type intv:Facade_needed_ST) (?south_fcd_st intv:facade ?fcd_S) (?south_fcd_st intv:scenario ?scen) (?south_fcd_st intv:needed_surface ?S_ST_avail)
 	(?east_fcd_st rdf:type intv:Facade_needed_ST) (?east_fcd_st intv:facade ?fcd_E) (?east_fcd_st intv:scenario ?scen) (?east_fcd_st intv:needed_surface ?surf_ST_E)
@@ -910,7 +894,7 @@
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pvt) makeTemp(?east_fcd_pvt) makeTemp(?west_fcd_pvt)
 	makeTemp(?east_fcd_st) makeTemp(?west_fcd_st)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on Heating/cooling - Try to complete ST for DHW if needed")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?S_area)
 	(?east_fcd_pvt rdf:type intv:Facade_needed_PVT) (?east_fcd_pvt intv:facade ?fcd_E) (?east_fcd_pvt intv:scenario ?scen) (?east_fcd_pvt intv:needed_surface ?E_PVT_surface)
 	(?west_fcd_pvt rdf:type intv:Facade_needed_PVT) (?west_fcd_pvt intv:facade ?fcd_W) (?west_fcd_pvt intv:scenario ?scen) (?west_fcd_pvt intv:needed_surface ?W_PVT_surface)
@@ -932,7 +916,7 @@
 	(?bldg bldg:hasFacade ?fcd_W) (?fcd_SW bldg:orientation 'West') (?fcd_W bldg:area ?W_area)
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pv) makeTemp(?south_fcd_pvt) makeTemp(?east_fcd_pv) makeTemp(?west_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on DHW - Try to complete PV for Heating/Cooling if needed")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?surfST)
 	(?south_fcd_pv rdf:type intv:Facade_needed_PV) (?south_fcd_pv intv:facade ?fcd_S) (?south_fcd_pv intv:scenario ?scen) (?south_fcd_pv intv:needed_surface ?S_PV_avail)
 	(?east_fcd_pv rdf:type intv:Facade_needed_PV) (?east_fcd_pv intv:facade ?fcd_E) (?east_fcd_pv intv:scenario ?scen) (?east_fcd_pv intv:needed_surface ?E_area)
@@ -957,7 +941,7 @@
 	difference(?E_area, ?surf_PVT_E, ?surf_PV_E), difference(?W_area, ?surf_PVT_W, ?surf_PV_W)
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pvt) makeTemp(?east_fcd_pvt) makeTemp(?west_fcd_pvt) makeTemp(?east_fcd_pv) makeTemp(?west_fcd_pv)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on DHW - Try to complete PV for Heating/Cooling if needed")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?S_area)
 	(?east_fcd_pvt rdf:type intv:Facade_needed_PVT) (?east_fcd_pvt intv:facade ?fcd_E) (?east_fcd_pvt intv:scenario ?scen) (?east_fcd_pvt intv:needed_surface ?surf_PVT_E)
 	(?west_fcd_pvt rdf:type intv:Facade_needed_PVT) (?west_fcd_pvt intv:facade ?fcd_W) (?west_fcd_pvt intv:scenario ?scen) (?west_fcd_pvt intv:needed_surface ?surf_PVT_W)
@@ -986,7 +970,7 @@
 	makeTemp(?sw_fcd_pvt) product(?SW_ratio_surf, ?surfPV, ?SW_PVT_area)
 	makeTemp(?se_fcd_st) product(?SE_ratio_surf, ?needSurf_ST, ?SE_ST_area)
 	makeTemp(?sw_fcd_st) product(?SW_ratio_surf, ?needSurf_ST, ?SW_ST_area)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on Heating/Cooling - Try to complete ST for DHW if needed")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_pvt rdf:type intv:Facade_needed_PVT) (?se_fcd_pvt intv:facade ?fcd_SE) (?se_fcd_pvt intv:scenario ?scen) (?se_fcd_pvt intv:needed_surface ?SE_PVT_area)
 	(?sw_fcd_pvt rdf:type intv:Facade_needed_PVT) (?sw_fcd_pvt intv:facade ?fcd_SW) (?sw_fcd_pvt intv:scenario ?scen) (?sw_fcd_pvt intv:needed_surface ?SW_PVT_area)
 	(?se_fcd_st rdf:type intv:Facade_needed_ST) (?se_fcd_st intv:facade ?fcd_SE) (?se_fcd_st intv:scenario ?scen) (?se_fcd_st intv:needed_surface ?SE_ST_area)
@@ -1013,14 +997,14 @@
 	makeTemp(?sw_fcd_pvt) product(?SW_ratio_surf, ?needSurf_ST, ?SW_PVT_area)
 	makeTemp(?se_fcd_pv) product(?SE_ratio_surf, ?S_PV_avail, ?SE_PV_area)
 	makeTemp(?sw_fcd_pv) product(?SW_ratio_surf, ?S_PV_avail, ?SW_PV_area)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Priority PVT on DHW - Try to complete PV for grid")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_pvt rdf:type intv:Facade_needed_PVT) (?se_fcd_pvt intv:facade ?fcd_SE) (?se_fcd_pvt intv:scenario ?scen) (?se_fcd_pvt intv:needed_surface ?SE_PVT_area)
 	(?sw_fcd_pvt rdf:type intv:Facade_needed_PVT) (?sw_fcd_pvt intv:facade ?fcd_SW) (?sw_fcd_pvt intv:scenario ?scen) (?sw_fcd_pvt intv:needed_surface ?SW_PVT_area)
 	(?se_fcd_pv rdf:type intv:Facade_needed_PV) (?se_fcd_pv intv:facade ?fcd_SE) (?se_fcd_pv intv:scenario ?scen) (?se_fcd_pv intv:needed_surface ?SE_PV_area)
 	(?sw_fcd_pv rdf:type intv:Facade_needed_PV) (?sw_fcd_pv intv:facade ?fcd_SW) (?sw_fcd_pv intv:scenario ?scen) (?sw_fcd_pv intv:needed_surface ?SW_PV_area)
 ]
 
-#### 6.1:  PVT does not cover Thermal and Elec - PVT to cover max
+#### 6.1:  PVT does not cover Thermal and Elec - PVT to cover maw
 #### PVT south Façade only
 [ensnare_solar6-1:
 	(?p rdf:type proj:Project)
@@ -1035,11 +1019,11 @@
 
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pvt)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Maximum PVT to cover max DHW and Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?S_area)
 ]
 
-#### 6.2:  PVT does not cover Thermal and Elec - PVT to cover max
+#### 6.2:  PVT does not cover Thermal and Elec - PVT to cover maw
 #### PVT south, east and west Façade
 [ensnare_solar6-2:
 	(?p rdf:type proj:Project)
@@ -1062,7 +1046,7 @@
 
 	makeTemp(?scen)
 	makeTemp(?south_fcd_pvt) makeTemp(?east_fcd_pvt) makeTemp(?west_fcd_pvt)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Maximum PVT to cover max DHW and Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?south_fcd_pvt rdf:type intv:Facade_needed_PVT) (?south_fcd_pvt intv:facade ?fcd_S) (?south_fcd_pvt intv:scenario ?scen) (?south_fcd_pvt intv:needed_surface ?S_area)
 	(?east_fcd_pvt rdf:type intv:Facade_needed_PVT) (?east_fcd_pvt intv:facade ?fcd_E) (?east_fcd_pvt intv:scenario ?scen) (?east_fcd_pvt intv:needed_surface ?E_PVT_surface)
 	(?west_fcd_pvt rdf:type intv:Facade_needed_PVT) (?west_fcd_pvt intv:facade ?fcd_W) (?west_fcd_pvt intv:scenario ?scen) (?west_fcd_pvt intv:needed_surface ?W_PVT_surface)
@@ -1076,7 +1060,6 @@
 	(?p proj:building ?bldg)
 	(?bldg bldg:hasFacade ?fcd_SE) (?fcd_SE bldg:orientation 'South East') (?fcd_SE bldg:area ?SE_area)
 	(?bldg bldg:hasFacade ?fcd_SW) (?fcd_SW bldg:orientation 'South West') (?fcd_SW bldg:area ?SW_area)
-	sum(?SE_area, ?SW_area, ?S_area)
 
 	(?scen_passive proj:surfNeedElec_PVT ?pvt_elec_needed_surface) quotient(?pvt_elec_needed_surface, 0.67, ?surfPV_S)
 	(?p proj:pvt_thermal_needed_surface ?pvt_thermal_needed_surface) quotient(?pvt_thermal_needed_surface, 0.67, ?surfST_S)
@@ -1085,7 +1068,7 @@
 
 	makeTemp(?scen)
 	makeTemp(?se_fcd_pvt) makeTemp(?sw_fcd_pvt)
--> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active) (?scen rdfs:label "Maximum PVT to cover max DHW and Heating/Cooling")
+-> (?scen proj:refines ?scen_passive) (?scen rdf:type proj:EnsnareScenario_Active)
 	(?se_fcd_pvt rdf:type intv:Facade_needed_PVT) (?se_fcd_pvt intv:facade ?fcd_SE) (?se_fcd_pvt intv:scenario ?scen) (?se_fcd_pvt intv:needed_surface ?SE_area)
 	(?sw_fcd_pvt rdf:type intv:Facade_needed_PVT) (?sw_fcd_pvt intv:facade ?fcd_SW) (?sw_fcd_pvt intv:scenario ?scen) (?sw_fcd_pvt intv:needed_surface ?SW_area)
 ]

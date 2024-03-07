@@ -40,9 +40,9 @@ def main():
     result = dict(**get_baseline(1234), **get_nZeB(1234), **get_Ensnare_Passive(1234))
     print(json.dumps(result))
 
-    remove_data(1234)
-    result = dict(**get_baseline(1234), **get_nZeB(1234), **get_Ensnare_Passive(1234))
-    print(json.dumps(result))
+    # remove_data(1234)
+    # result = dict(**get_baseline(1234), **get_nZeB(1234), **get_Ensnare_Passive(1234))
+    # print(json.dumps(result))
 
 
 if __name__ == '__main__':
