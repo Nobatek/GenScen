@@ -1,8 +1,9 @@
-.idea/*
-OLD/*
-Jena/Tests/*
-Documentation/*
+.idea/
+.project
+OLD/
+Jena/Tests/
+Documentation/
 TestProject*
-__pycache__/*
+__pycache__/
 config.py
 *.pyc

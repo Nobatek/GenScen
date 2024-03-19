@@ -239,7 +239,7 @@ def _format_ensnare(scenarios):
     # create the final JSON file
     for id_passive in passive.keys():
         for passive_scen in passive[id_passive]:
-            format_scenario =  {'id': str(uuid.uuid1()), 'description': labels[id_passive]}
+            format_scenario =  {'description': labels[id_passive]}
             for it in passive_scen:
                 intervention, material = it.split(':')
                 format_scenario[intervention] = material
@@ -264,7 +264,7 @@ def _format_passive(intvs_passive):
 def _format_active(intvs_active, description):
     intvs = intvs_active['value'].split('&&')
     # create dictionary of intervention
-    facades = {"description": description}
+    facades = {"id": str(uuid.uuid1()), "description": description}
     for intv in intvs:
         action, surface = intv.strip().split(':')
         system, facade = action.split('_')
