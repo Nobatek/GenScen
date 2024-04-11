@@ -9,6 +9,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from config import USERS
 
+from extract import get_baseline, get_nZeB, get_Ensnare_Passive, remove_data
+
+
 # App configuration
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -28,15 +31,16 @@ def to_native_string(string, encoding="ascii"):
     return out
 
 
-def get_technalia_data(project_id):
+def get_tecnalia_data(project_id):
     # Using hashlib.sha512() method
     params = {"project_id": str(project_id), "param_name":"longitude"}
     prehash = sha512(str(params).encode('utf-8')).hexdigest()
     # hash = SHA512(timestamp$url$user$prehash$pass)
     now = str(time.time())[:13]
     core_url = 'ensnare.tecnalia.com'
-    url = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_project_param'
-    url2 = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_scengen_params?project_id='+str(project_id)
+    # url = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_project_param'
+    url2 = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_scengen_params?project_id='\
+           + str(project_id)
     user = 'guest@guest.com'
     passwd = ''
 
@@ -93,15 +97,16 @@ def unauthorized():
     return jsonify({"status": "error", "message": "Wrong username or password"}), 401
 
 
-# Now we can user @role_required('admin') or @role_required('user') to protect the routes
-def role_required(role):
+# Now we can use @role_required(['admin']) or @role_required(['user']) to protect the routes
+def role_required(roles):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if g.user and USERS.get(g.user).get('role') == role:
+            if g.user and USERS.get(g.user).get('role') in roles:
                 return f(*args, **kwargs)
             else:
-                return jsonify({"status": "error", "message": "You do not have permission to access this resource"}), 403
+                return jsonify(
+                    {"status": "error", "message": "You do not have permission to access this resource"}), 403
         return decorated_function
     return decorator
 
@@ -113,12 +118,13 @@ def role_required(role):
     @param : project_id : int : The project id
     @return : json : The status of the request
 """
-@app.route('/nobatek/insert_data/<int:project_id>', methods=['POST'])
+@app.route('/project/<int:project_id>', methods=['POST'])
 @auth.login_required
-@role_required('admin')
+@role_required(['admin', 'user'])
 def post_data(project_id):
     try:
-        data = get_technalia_data(project_id)
+        print("Get data from Tecnalia")
+        data = get_tecnalia_data(project_id)
         res = insert_data(data)
         if res == 200:
             return jsonify({"status": "success", "message": "Data inserted successfully"}), 200
@@ -133,11 +139,23 @@ def post_data(project_id):
     @param : project_id : int : The project id
     @return : json : The data from the tecnalia database
 """
-@app.route('/nobatek/get_data/<int:project_id>', methods=['GET'])
+@app.route('/scenarios/<int:project_id>', methods=['GET'])
 @auth.login_required
-@role_required('admin')
-def get_data(project_id):
-    return get_technalia_data(project_id)
+@role_required(['admin', 'user'])
+def get_scenarios(project_id):
+    result = dict(**get_baseline(project_id), **get_nZeB(project_id), **get_Ensnare_Passive(project_id))
+    return jsonify(result), 200
+
+
+"""
+    @brief : Remove project from the database
+    @return : json : The HTTP response
+"""
+@app.route('/project/<int:project_id>', methods=['DELETE'])
+@auth.login_required
+@role_required(['admin', 'user'])
+def remove(project_id):
+    return jsonify(remove_data(project_id), 200)
 
 
 # ------------------------------ USER MANAGEMENT ----------------------------- #
@@ -149,9 +167,9 @@ def get_data(project_id):
     @param : role : string : The role
     @return : json : The status of the request
 """
-@app.route('/nobatek/create_user/<string:username>/<string:password>/<string:role>', methods=['POST'])
+@app.route('/create_user/<string:username>/<string:password>/<string:role>', methods=['POST'])
 @auth.login_required
-@role_required('admin')
+@role_required(['admin'])
 def create_user(username, password, role):
     try:
         if username in USERS:
@@ -170,9 +188,9 @@ def create_user(username, password, role):
     @param : username : string : The username
     @return : json : The status of the request
 """
-@app.route('/nobatek/delete_user/<string:username>', methods=['DELETE'])
+@app.route('/delete_user/<string:username>', methods=['DELETE'])
 @auth.login_required
-@role_required('admin')
+@role_required(['admin'])
 def delete_user(username):
     try:
         if username not in USERS:
@@ -192,9 +210,9 @@ def delete_user(username):
     @param : role : string : The role
     @return : json : The status of the request
 """
-@app.route('/nobatek/update_user/<string:username>/<string:password>/<string:role>', methods=['PUT'])
+@app.route('/update_user/<string:username>/<string:password>/<string:role>', methods=['PUT'])
 @auth.login_required
-@role_required('admin')
+@role_required(['admin'])
 def update_user(username, password, role):
     try:
         hashed_password = generate_password_hash(password)
@@ -210,9 +228,9 @@ def update_user(username, password, role):
     @brief : Get all the users
     @return : json : The users
 """
-@app.route('/nobatek/get_users', methods=['GET'])
+@app.route('/get_users', methods=['GET'])
 @auth.login_required
-@role_required('admin')
+@role_required(['admin'])
 def get_users():
     return jsonify(USERS)
 

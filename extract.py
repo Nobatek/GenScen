@@ -16,9 +16,9 @@ def _get_prefix():
     return f'''
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX proj: <https://nobatek.inef4.com/renovation/project#>
-    PREFIX bldg: <https://nobatek.inef4.com/renovation/building#>
-    PREFIX intv: <https://nobatek.inef4.com/renovation/intervention#>
+    PREFIX proj: <https://ensnare.nobatek.com/project#>
+    PREFIX bldg: <https://ensnare.nobatek.com/building#>
+    PREFIX intv: <https://ensnare.nobatek.com/intervention#>
     '''
 
 def insert_data(data):

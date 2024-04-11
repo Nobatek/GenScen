@@ -1,4 +1,4 @@
-# baseURI: https://nobatek.inef4.com/renovation/project#
+# baseURI: https://ensnare.nobatek.com/project#
 # prefix: 
 
 @prefix dbo: <http://dbpedia.org/ontology/> .
@@ -7,9 +7,9 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix : <https://nobatek.inef4.com/renovation/project#> .
-@prefix bldg: <https://nobatek.inef4.com/renovation/building#> .
-@prefix interv: <https://nobatek.inef4.com/renovation/intervention#> .
+@prefix : <https://ensnare.nobatek.com/project#> .
+@prefix bldg: <https://ensnare.nobatek.com/building#> .
+@prefix interv: <https://ensnare.nobatek.com/intervention#> .
 @prefix schema: <https://schema.org/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
@@ -57,7 +57,7 @@ vcard:fn
   rdf:type voaf:Vocabulary ;
   rdf:type owl:Ontology ;
   dcterms:creator "Pierre Bourreau" ;
-  dcterms:description """The Renovation project Ontology (RenOnt)"""@en ;
+  dcterms:description """The Renovation project Ontology is used to provide a description of the building (through the use of the ENSNARE building ontology), but also its geographic location and subsequently, the expected climatic conditions that can impact the thermal performance of the building. For each EuroRegion, the ontology provides thermal resistance expected for three different insulation width, through the expected heating (winter) and cooling (summer) expected energy demand per m²; and the expected solar radiance, used to dimension photovoltaic, solar thermal and hybrid systems incorporated in the ENSNARE façades."""@en ;
   dcterms:issued "2022-10-19T12:00:00"^^xsd:dateTime ;
   dcterms:license <https://creativecommons.org/licenses/by/1.0/> ;
   dcterms:modified "2020-07-31T08:51:00"^^xsd:dateTime ;

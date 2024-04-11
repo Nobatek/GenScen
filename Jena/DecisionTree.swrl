@@ -2,9 +2,9 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix list: <https://w3id.org/list#> .
-@prefix proj: <https://nobatek.inef4.com/renovation/project#> .
-@prefix bldg: <https://nobatek.inef4.com/renovation/building#> .
-@prefix intv: <https://nobatek.inef4.com/renovation/intervention#> .
+@prefix proj: <https://ensnare.nobatek.com/project#> .
+@prefix bldg: <https://ensnare.nobatek.com/building#> .
+@prefix intv: <https://ensnare.nobatek.com/intervention#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ### Preliminary computations
@@ -21,7 +21,7 @@
 	quotient(?area_fcd, ?area_roof, ?ratio)
 -> (?fcd bldg:facadeRoofRatio ?ratio)]
 
-# 2. Computes the energy needed for the DHW,in kWh
+# 2. Computes the energy needed for the DHW, in kWh
 # https://tecsol.blogs.com/files/s5-1-formation-solaireth-dimensionnement-2020-1.pdf
 [dhw_need:
 	(?bldg bldg:nbDwellings ?nb_dwellings)
