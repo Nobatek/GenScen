@@ -30,90 +30,109 @@
 <http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
 
 :Building
-    rdf:type owl:Class .
+    rdf:type owl:Class ;
+    rdfs:comment "A building, as seen for a simplified energy audit." ;
+  .
   
 :Facade
-    rdf:type owl:Class .
+    rdf:type owl:Class ;
+    rdfs:comment "A façade as a component of the envelopes with specific attributes related to its surface and orientation." ;
+  .
     
 :area
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Facade ;
-    rdfs:range xsd:double .
+    rdfs:range xsd:double
+    rdfs:comment "The area in m² of a geometric element - restricted to façades and roof in the frame of GenScen".
 	
-:maxFacadeArea
-	rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Building ;
-    rdfs:range xsd:double .
+# :maxFacadeArea
+#	rdf:type owl:DatatypeProperty ;
+#    rdfs:domain :Building ;
+#    rdfs:range xsd:double .
     
 :glazingRatio
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Building ;
-    rdfs:range xsd:double .
+    rdfs:domain :Façade ;
+    rdfs:range xsd:double ;
+    rdfs:comment "The ratio of glazed surface on a given façade. Should be a value between 0 and 1".
     
 :orientation
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Facade ;
-    rdfs:range :Orientation .
+    rdfs:range :Orientation ;
+    rdfs:comment "The orientation of a building elements, typically the façade; used to evaluate the solar gains when installing active panels on it.".
     
 :hasFacade
     rdf:type owl:ObjectProperty ;
     rdfs:domain :Building ;
-    rdfs:range :Facade .
+    rdfs:range :Facade ;
+    rdfs:comment "Used to relate façades to a building.".
 
 :roofArea
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range xsd:double .
+    rdfs:range xsd:double ;
+    rdfs:comment "The area of the roof for a given building.".
     
 :heatingEnergy
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range :Energy .
+    rdfs:range :Energy ;
+    rdfs:comment "The type of final energy used for heating.".
     
 :centralHeating
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range xsd:boolean .
+    rdfs:range xsd:boolean ;
+    rdfs:comment "A flag to specify whether the heating system is a central one or not.".
 
 :centralDHW
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range xsd:boolean .
+    rdfs:range xsd:boolean ;
+    rdfs:comment "A flag to specify whether the domestic hot water system is a central one or not.".
 
 :ventilation
     rdf:type owl:ObjectProperty ;
     rdfs:domain :Building ;
-    rdfs:range :Ventilation .
+    rdfs:range :Ventilation ;
+    rdfs:comment "The type of ventilation in the building".
     
 :glazingLevel
     rdf:type owl:ObjectProperty ;
     rdfs:domain :Building ;
-    rdfs:range :WindowGlazing .
+    rdfs:range :WindowGlazing ;
+    rdfs:comment "The type of glazing on the building. It is assumed that glazing type is homogenous in the building.".
     
 :ratioPV_Roof
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range xsd:double .
+    rdfs:range xsd:double ;
+    rdfs:comment "The ratio of PV panels installed on the roof.".
 
 :facadeInsulation
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Facade ;
-    rdfs:range :InsulationLevel .
+    rdfs:range :InsulationLevel ;
+    rdfs:comment "The insulation level (from None to High) on a given façade.".
 
 :roofInsulation
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range :InsulationLevel .
+    rdfs:range :InsulationLevel ;
+    rdfs:comment "The insulation level (from None to High) on the roof.".
 
 :nbDwellings
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:integer ;
+    rdfs:comment "The number of dwellings in the building. Should be a positive integer. Used to evaluate the hot water demand with an assumption of 3 persons per dwelling.".
 
 :livingArea
     rdf:type owl:DatatypeProperty ;
     rdfs:domain :Building ;
-    rdfs:range xsd:double .
+    rdfs:range xsd:double ;
+    rdfs:comment "The living are in the building. Used to evaluate the heating/cooling demand in the building.".
 
 :Ventilation
   rdf:type owl:Class ;

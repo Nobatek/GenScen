@@ -53,6 +53,21 @@ vs:term_status
 vcard:fn
   rdf:type owl:AnnotationProperty ;
 .
+<https://orcid.org/0000-0001-6085-8461>
+  rdf:type vcard:Individual ;
+  rdf:type schema:Person ;
+  vcard:fn "Pierre Bourreau" ;
+  schema:name "Pierre Bourreau" ;
+.
+schema:domainIncludes
+  rdf:type owl:AnnotationProperty ;
+.
+schema:name
+  rdf:type owl:AnnotationProperty ;
+.
+schema:rangeIncludes
+  rdf:type owl:AnnotationProperty ;
+.
 :
   rdf:type voaf:Vocabulary ;
   rdf:type owl:Ontology ;
@@ -75,37 +90,40 @@ vcard:fn
 	rdf:type owl:ObjectProperty ;
 	rdfs:domain :Project ;
 	rdfs:range bldg:Building ;
+	rdfs:comment "The building associated to the project. A single building per project is made.";
 .
 :location
 	rdf:type owl:ObjectProperty ;
 	rdfs:domain :Project ;
 	rdfs:range bldg:EuroRegion ;
+	rdfs:comment "The euro region (NUTS1) associated to the project.";
 .
 :budget
   rdf:type owl:DatatypeProperty, :projectTarget;
   rdfs:comment "The global budget of the renovation, has defined by the client. It does not entail potential incentives." ;
   rdf:range xsd:double ;
+  rdfs:comment "The global budget of the project; i.e. the total investment the building owner can afford. Does not consider maintenance costs or subsidies.";
 .
 
-:electricityConsumption
-  rdf:type owl:DatatypeProperty, :projectProperty;
-  rdfs:comment "The yearly electricity consumption of the building." ;
-  rdf:range xsd:double ;
-.
+#:electricityConsumption
+#  rdf:type owl:DatatypeProperty, :projectProperty;
+#  rdfs:comment "The yearly electricity consumption of the building." ;
+#  rdf:range xsd:double ;
+#.
 
-:gazConsumption
-  rdf:type owl:DatatypeProperty, :projectProperty;
-  rdfs:comment "The yearly gaz consumption of the building." ;
-  rdf:range xsd:double ;
-.
+#:gazConsumption
+#  rdf:type owl:DatatypeProperty, :projectProperty;
+#  rdfs:comment "The yearly gaz consumption of the building." ;
+#  rdf:range xsd:double ;
+#.
 
-:projectProperty
-	rdfs:subClassOf rdf:Property ;
-	rdf:domain :Project .
+#:projectProperty
+#	rdfs:subClassOf rdf:Property ;
+#	rdf:domain :Project .
 	
-:projectTarget
-	rdfs:subClassOf rdf:Property ;
-	rdf:domain :Project .
+#:projectTarget
+#	rdfs:subClassOf rdf:Property ;
+#	rdf:domain :Project .
 
 :RenoScenario
   rdf:type owl:Class ;
@@ -117,101 +135,99 @@ vcard:fn
 :BaselineScenario
     rdf:type owl:Class;
     rdfs:subClassOf :RenoScenario ;
+    rdfs:comment "A standard energy renovation scenario, with low ambitions. It consists on a façade and roof insulation, and double-glazed windows.";
 .
 :nZeBScenario
     rdf:type owl:Class;
     rdfs:subClassOf :RenoScenario ;
+    rdfs:comment "A highly ambitious energy renovation scenario, as it would be performed in a standard way. It consists on high façade and roof insulation, double-glazed windows, heat pumps installation for heating, cooling and DHW, double-flow ventilation and PV panels on the whole roof surface.";
 .
 :EnsnareScenario_Passive
    rdf:type owl:Class ;
    rdfs:subClassOf :RenoScenario ;
+   rdfs:comment "An intermediary ENSNARE renovation scenario, where only façade insulation, and windows replacements are evaluated.";
 .
 :EnsnareScenario_Passive_Low
    rdf:type owl:Class ;
    rdfs:subClassOf :EnsnareScenario_Passive ;
+   rdfs:comment "A low-ambitious ENSNARE scenario on the envelope. The insulation layer will remain low" ;
 .
 :EnsnareScenario_Passive_Medium
    rdf:type owl:Class ;
    rdfs:subClassOf :EnsnareScenario_Passive ;
+   rdfs:comment "A mid-ambitious ENSNARE scenario on the envelope. The insulation layer will be of good performance." ;
 .
 :EnsnareScenario_Passive_High
    rdf:type owl:Class ;
    rdfs:subClassOf :EnsnareScenario_Passive ;
+   rdfs:comment "A highly ambitious ENSNARE renovation scenario, with high performance on the insulation of the façades." ;
 .
 
 :EnsnareScenario_Active
    rdf:type owl:Class ;
    rdfs:subClassOf :RenoScenario ;
+   rdfs:comment "The second step of the ENSNARE renovation scenarios, where active systems are considered. It is a refinement of an ENSNARE passive scenario." ;
 .
 
 :forProject
 	rdf:type owl:ObjectProperty ;
 	rdfs:domain :RenoScenario ;
 	rdfs:range :Project ;
+	rdfs:comment "Relates a renovation scenario to a project." ;
 .
 :refines
 	rdf:type owl:ObjectProperty ;
 	rdfs:domain :EnsnareScenario_Passive ;
 	rdfs:range :EnsnareScenario_Active ;
+	rdfs:comment "The refinement relation between a passive and active ENSNARE scenario. The conjunction of both forms an ENSNARE renovation scenario." ;
 .
 :isMadeOf
 	rdf:type owl:ObjectProperty ;
 	rdfs:domain :RenoScenario ;
 	rdfs:range interv:RenovationAction ;
+	rdfs:comment "Relates a renovation scenario with a renovation action (i.e. a modification/upgrade action)" ;
 .
 :Recommendation
 	rdf:type owl:Class ;
+	rdfs:comment "A recommendation as a score to prioritize a specific renovation action."
 .
 :project
 	rdf:type owl:ObjectProperty ;
 	rdfs:domain :Recommendation ;
 	rdfs:range :Project ;
+	rdfs:comment "The relation between a renovation project and a recommendation."
 .
 :priority
 	rdf:type owl:DatatypeProperty ;
 	rdfs:domain :Recommendation ;
 	rdfs:range xsd:double ;
+	rdfs:comment "The priority score associated to a renovation action."
 .
-:alternative
-	rdf:type owl:ObjectProperty ;
-	rdfs:domain :Recommendation ;
-	rdfs:range :RenoAlternative ;
-.
+#:alternative
+#	rdf:type owl:ObjectProperty ;
+#	rdfs:domain :Recommendation ;
+#	rdfs:range :RenoAlternative ;
+#.
 :on
     rdf:type owl:ObjectProperty ;
     rdfs:domain :Recommendation ;
     rdfs:range owl:Class ;
 .
-:target
-    rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Project ;
-    rdfs:range xsd:decimal ;
-.
-:targetThermal
-    rdfs:subPropertyOf :target ;
-.
-:targetElectricity
-    rdfs:subPropertyOf :target ;
-.
-<https://orcid.org/0000-0001-6085-8461>
-  rdf:type vcard:Individual ;
-  rdf:type schema:Person ;
-  vcard:fn "Pierre Bourreau" ;
-  schema:name "Pierre Bourreau" ;
-.
-schema:domainIncludes
-  rdf:type owl:AnnotationProperty ;
-.
-schema:name
-  rdf:type owl:AnnotationProperty ;
-.
-schema:rangeIncludes
-  rdf:type owl:AnnotationProperty ;
-.
-
+#:target
+#    rdf:type owl:DatatypeProperty ;
+#    rdfs:domain :Project ;
+#    rdfs:range xsd:decimal ;
+#.
+#:targetThermal
+#    rdfs:subPropertyOf :target ;
+#.
+#:targetElectricity
+#    rdfs:subPropertyOf :target ;
+#.
 
 :Country
-  rdf:type owl:Class
+  rdf:type owl:Class ;
+  rdfs:comment "A country. Only EU state members are considered."
 .
 :BELGIUM
   rdf:type :Country ;
@@ -327,39 +343,67 @@ schema:rangeIncludes
 .
 
 :EuroRegion
-  rdf:type owl:Class
+  rdf:type owl:Class ;
+  rdfs:comment "The EuroRegions (NUTS1). See https://ec.europa.eu/eurostat/web/nuts/overview/"
 .
 :country
 	rdf:type owl:ObjectProperty ;
 	rdfs:range :EuroRegion ;
 	rdfs:domain :Country ;
+	rdfs:comment "Associates a Euro Region to a country." ;
 .
 
 :yHeatNeed
 	rdf:type owl:DatatypeProperty ;
 	rdfs:domain :EuroRegion ;
 	rdfs:domain xsd:int ;
+	rdfs:comment "The yearly heating energy need per m² for a given Euro Region." ;
 .
 :yHeatNeed_lowInsulation 
 	rdfs:subPropertyOf :yHeatNeed ;
+	rdfs:comment "The yearly heating energy need per m² for a given Euro Region given a low insulation." ;
 .
 :yHeatNeed_mediumInsulation 
 	rdfs:subPropertyOf :yHeatNeed ;
+	rdfs:comment "The yearly heating energy need per m² for a given Euro Region given a medium insulation." ;
 .
 :yHeatNeed_highInsulation 
 	rdfs:subPropertyOf :yHeatNeed ;
+	rdfs:comment "The yearly heating energy need per m² for a given Euro Region given a high insulation." ;
+.
+
+:yCoolNeed
+	rdf:type owl:DatatypeProperty ;
+	rdfs:domain :EuroRegion ;
+	rdfs:domain xsd:int ;
+	rdfs:comment "The yearly cooling energy need per m² for a given Euro Region." ;
+.
+:yCoolNeed_lowInsulation
+	rdfs:subPropertyOf :yHeatNeed ;
+	rdfs:comment "The yearly cooling energy need per m² for a given Euro Region given a low insulation." ;
+.
+:yCoolNeed_mediumInsulation
+	rdfs:subPropertyOf :yHeatNeed ;
+	rdfs:comment "The yearly cooling energy need per m² for a given Euro Region given a medium insulation." ;
+.
+:yCoolNeed_highInsulation
+	rdfs:subPropertyOf :yHeatNeed ;
+	rdfs:comment "The yearly cooling energy need per m² for a given Euro Region given a high insulation." ;
 .
 
 :avgRadiance
 	rdf:type owl:DatatypeProperty ;
 	rdfs:range :EuroRegion ;
 	rdfs:domain xsd:double ;
+	rdfs:comment "An average solar radiance in a Euro Region - no masks considered." ;
 .
 :winterRadiance
 	:rdfs:subPropertyOf :avgRadiance ;
+	rdfs:comment "The average solar radiance on winter for a given Euro Region - no masks considered." ;
 .
 :summerRadiance
 	:rdfs:subPropertyOf :avgRadiance ;
+	rdfs:comment "The average solar radiance on summer for a given Euro Region - no masks considered." ;
 .
 
 :BrusselsRegion
@@ -387,7 +431,6 @@ schema:rangeIncludes
 	:yCoolNeed_highInsulation 5 ;
 	:winterRadiance 50.46  ;
 	:summerRadiance 91.22  ;
-
 .
 :RegionWallonne
   rdf:type :EuroRegion ;
