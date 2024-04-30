@@ -31,69 +31,86 @@
 ###  http://purl.org/dc/terms/title
 <http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
   
-interv:InsulateFacade rdf:type proj:Recommendation_Passive .
+interv:InsulateFacade rdf:type proj:Recommendation_Passive;
+ rdfs:comment "Renovation recommendation to insulate the façade".
     
-interv:InsulateRoof rdf:type proj:Recommendation_Passive .
+interv:InsulateRoof rdf:type proj:Recommendation_Passive ;
+ rdfs:comment "Renovation recommendation to insulate the roof".
 
-interv:ChangeWindows rdf:type proj:Recommendation_Passive .
+interv:ChangeWindows rdf:type proj:Recommendation_Passive ;
+ rdfs:comment "Renovation recommendation to change the windows".
     
-interv:Ventilation rdf:type proj:Recommendation_Active .
+interv:Ventilation rdf:type proj:Recommendation_Active ;
+ rdfs:comment "Renovation recommendation to install or change the ventilation system".
     
-interv:Heating rdf:type proj:Recommendation_Active .
+interv:Heating rdf:type proj:Recommendation_Active ;
+ rdfs:comment "Renovation recommendation to change the heating system".
    
-interv:DomesticHotWater rdf:type proj:Recommendation_Active .
+interv:DomesticHotWater rdf:type proj:Recommendation_Active ;
+ rdfs:comment "Renovation recommendation to change the domestic hot water system".
     
-interv:InstallPV rdf:type proj:Recommendation_Active .
+interv:InstallPV rdf:type proj:Recommendation_Active ;
+ rdfs:comment "Renovation recommendation to install some PV panels".
 
 ## Facade Action
 
-interv:RenovationAction rdf:type owl:Class .
+interv:RenovationAction rdf:type owl:Class ;
+    rdfs:comment "A renovation action is a refinement of a recommendation. It specifies the type of product to use".
 
 
 interv:ETI_PVC_15cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
-  rdfs:label "ETI PVC 15cm"
+  rdfs:label "ETI PVC 15cm" ;
+  rdfs:comment "External thermal insulation of the façade with a thickness of 15cm. The material used is polystyrene" ;
 .
 interv:ETI_PVC_10cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ETI PVC 10cm" ;
+  rdfs:comment "External thermal insulation of the façade with a thickness of 10cm. The material used is polystyrene" ;
 .
 interv:ETI_PVC_5cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ETI PVC 5cm" ;
+  rdfs:comment "External thermal insulation of the façade with a thickness of 5cm. The material used is polystyrene" ;
 .
 interv:ETI_PVC_44cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ETI PVC 44cm" ;
+  rdfs:comment "External thermal insulation of the façade with a thickness of 44cm. The material used is polystyrene" ;
 .
 interv:ETI_PVC_30cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ETI PVC 30cm" ;
+  rdfs:comment "External thermal insulation of the façade with a thickness of 30cm. The material used is polystyrene" ;
 .
 interv:ETI_PVC_20cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ETI PVC 20cm" ;
+  rdfs:comment "External thermal insulation of the façade with a thickness of 20cm. The material used is polystyrene" ;
 .
 interv:ENSNARE_10cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ENSNARE 10cm" ;
+  rdfs:comment "ENSNARE-integrated external thermal insulation of the façade with a thickness of 10cm."
 .
 interv:ENSNARE_20cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ENSNARE 20cm" ;
+  rdfs:comment "ENSNARE-integrated external thermal insulation of the façade with a thickness of 20cm." ;
 .
 interv:ENSNARE_30cm
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
   rdfs:label "ENSNARE 30cm" ;
+  rdfs:comment "ENSNARE-integrated external thermal insulation of the façade with a thickness of 30cm." ;
 .
 #interv:ENSNARE_PVC_10cm
 #  rdf:type interv:RenovationAction ;
@@ -142,6 +159,7 @@ interv:ENSNARE_30cm
 interv:ENSNARE_None
   rdf:type interv:RenovationAction ;
   interv:refines interv:InsulateFacade ;
+  rdfs:label 'ENSNARE no insulation' ;
 .
 
 ##
@@ -187,23 +205,24 @@ interv:Insulation_Roof_XPS_60cm
 interv:DoubleGlazedWindows
 	rdf:type interv:RenovationAction ;
 	interv:refines interv:ChangeWindows ;
-	rdfs:label "Double Glazed Windows" ;
+	rdfs:label "double-glazed windows" ;
 .
 interv:ENSNARE_ClassicWindows
 	rdf:type interv:RenovationAction ;
 	interv:refines interv:ChangeWindows ;
-	rdfs:label "Classic Windows" ;
+	rdfs:label "wlassic windows" ;
 .
 interv:ENSNARE_ActiveWindows
 	rdf:type interv:RenovationAction ;
 	interv:refines interv:ChangeWindows, interv:Ventilation ;
-	rdfs:label "Active Windows" ;
+	rdfs:label "active windows" ;
 .
 
 ##
 interv:COP
     rdf:type rdfs:DatatypeProperty ;
     rdfs:domain interv:HeatPump ;
+    rdfs:label "COP - Coefficient of Performance" ;
 	rdfs:range xsd:double ;
 .
 interv:HeatPump
@@ -213,23 +232,23 @@ interv:HeatPump
 .
 interv:CentralHeatPump
 	rdfs:subClassOf interv:HeatPump ;
-	rdfs:label "Central Heat Pump" ;
+	rdfs:label "central heat pump" ;
 	interv:COP 4.5 ;
 .
 interv:IndividualHeatPump
 	rdfs:subClassOf interv:HeatPump ;
-	rdfs:label "Individual Heat Pump" ;
+	rdfs:label "individual heat pump" ;
 	interv:COP 4.5 ;
 .
 interv:DualFlowVentilation
 	rdf:type interv:RenovationAction ;
 	interv:refines interv:Heating, interv:Ventilation ;
-	rdfs:label "Dual Flow Ventilation" ;
+	rdfs:label "dual flow ventilation" ;
 .
 interv:PV_Roof
   rdf:type interv:RenovationAction ;
   interv:refines interv:InstallPV ;
-  rdfs:label "PV Installation - Roof" ;
+  rdfs:label "PV installation - Roof" ;
   interv:elecPerf 0.2 ;
 .
 
@@ -237,27 +256,33 @@ interv:elecPerf
 	rdfs:type owl:DatatypeProperty ;
 	rdfs:domain interv:ENSNARE_PV, interv:ENSNARE_PVT ;
 	rdfs:range xsd:double ;
+	rdfs:label "electricity production performance factor" ;
 .
 interv:thermalPerf
 	rdfs:type owl:DatatypeProperty ;
 	rdfs:domain interv:ENSNARE_ST, interv:ENSNARE_PVT ;
 	rdfs:range xsd:double ;
+	rdfs:label "thermal production performance factor" ;
 .
 interv:ENSNARE_Product
 	rdf:type owl:Class ;
+	rdfs:label "Generic ENSNARE active product" ;
 .
 interv:ENSNARE_PV
 	rdfs:subClassOf interv:ENSNARE_Product ;
 	interv:elecPerf 0.16 ;
+    rdfs:label "ENSNARE PV panel" ;
 .
 interv:ENSNARE_ST
 	rdfs:subClassOf interv:ENSNARE_Product ;
 	interv:thermalPerf 0.84;
+	rdfs:label "ENSNARE solar thermal panels" ;
 .
 interv:ENSNARE_PVT
 	rdfs:subClassOf interv:ENSNARE_Product ;
 	interv:elecPerf 0.18 ;
 	interv:thermalPerf 0.58 ;
+	rdfs:label "ENSNARE hybrid PV+T panel" ;
 .
 ## Inverter Performance = 0.97
 
@@ -266,12 +291,14 @@ interv:PV_surface
     rdfs:domain interv:RenoScenario ;
 	interv:product interv:ENSNARE_PV ;
     rdfs:range xsd:double ;
+    rdfs:label "ENSNARE PV installation surface" ;
 .
 interv:ST_surface
     rdf:type rdfs:DatatypeProperty ;
     rdfs:domain interv:RenoScenario ;
 	interv:thermalPerf 4.0 ;
     rdfs:range xsd:double ;
+    rdfs:label "ENSNARE Solar Thermal installation surface" ;
 .
 interv:PVT_surface
     rdf:type rdfs:DatatypeProperty ;
@@ -279,27 +306,36 @@ interv:PVT_surface
 	interv:elecPerf 7.2 ;
 	interv:thermalPerf 2.5 ;
     rdfs:range xsd:double ;
+    rdfs:label "ENSNARE PV+T installation surface" ;
 .
 
-interv:Facade_Needed_Solar rdf:type owl:Class .
+interv:Facade_Needed_Solar rdf:type owl:Class ;
+    rdfs:label "Surface needed for a solar system installation"
+.
 interv:Facade_needed_PV
-    rdfs:subClassOf interv:Facade_Needed_Solar .
+    rdfs:subClassOf interv:Facade_Needed_Solar ;
+    rdfs:label "Surface needed for a PV installation".
 interv:Facade_needed_ST
-    rdfs:subClassOf interv:Facade_Needed_Solar .
+    rdfs:subClassOf interv:Facade_Needed_Solar ;
+    rdfs:label "Surface needed for an ST installation".
 interv:Facade_needed_PVT
-    rdfs:subClassOf interv:Facade_Needed_Solar .
+    rdfs:subClassOf interv:Facade_Needed_Solar ;
+     rdfs:label "Surface needed for a PV+T installation".
 interv:needed_surface
     rdf:type rdfs:DatatypeProperty ;
     rdfs:domain interv:Facade_Needed_Solar ;
     rdfs:range xsd:double ;
+    rdfs:comment "surface needed for an active system installation" ;
 .
 interv:facade
     rdf:type owl:ObjectProperty ;
     rdfs:domain interv:Facade_Needed_Solar ;
     rdfs:range bldg:Facade ;
+    rdfs:comment "surface distribution of the façade surface per active systems." ;
 .
 interv:scenario
     rdf:type owl:ObjectProperty ;
     rdfs:domain bldg:Facade ;
     rdfs:range interv:EnsnareScenario ;
+    rdfs:comment "renovation of a façade as part of an ENSNARE renovatoin scenario" ;
 .
