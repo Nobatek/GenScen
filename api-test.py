@@ -39,7 +39,7 @@ def get_tecnalia_data(project_id):
     now = str(time.time())[:13]
     core_url = 'ensnare.tecnalia.com'
     # url = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_project_param'
-    url2 = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_scengen_params?project_id='\
+    url2 = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_genscen_params?project_id='\
            + str(project_id)
     user = 'guest@guest.com'
     passwd = ''
