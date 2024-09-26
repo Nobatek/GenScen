@@ -7,3 +7,4 @@ TestProject*
 __pycache__/
 config.py
 *.pyc
+users.json

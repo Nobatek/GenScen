@@ -1,3 +1,4 @@
+import json
 from hashlib import sha512
 import time
 import base64
@@ -72,6 +73,15 @@ def get_tecnalia_data(project_id):
 
 # ---------------------------------- AUTHENTICATION ---------------------------------- #
 
+def _get_user(username):
+    with open(USERS, 'r') as f:
+        d = json.load(f)
+        return d.get(username, None)
+
+def _update_users(users):
+    with open(USERS, 'w') as f:
+        json.dump(users, f)
+
 """
     @brief : Verify the password
     @param : username : string : The username
@@ -80,7 +90,7 @@ def get_tecnalia_data(project_id):
 """
 @auth.verify_password 
 def verify_password(username, password): 
-    user = USERS.get(username)
+    user = _get_user(username)
     if user and check_password_hash(user.get('password'), password): 
         g.user = username 
         return True
@@ -101,7 +111,7 @@ def role_required(roles):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if g.user and USERS.get(g.user).get('role') in roles:
+            if g.user and _get_user(g.user).get('role') in roles:
                 return f(*args, **kwargs)
             else:
                 return jsonify(
@@ -171,12 +181,12 @@ def remove(project_id):
 @role_required(['admin'])
 def create_user(username, password, role):
     try:
-        if username in USERS:
+        users = get_users()
+        if username in users:
             return jsonify({"status": "error", "message": "User already exists"}), 400
         hashed_password = generate_password_hash(password)
-        USERS[username] = {'password': hashed_password, 'role': role}
-        with open('config.py', 'w') as file:
-            file.write("USERS = " + str(USERS))
+        users[username] = {'password': hashed_password, 'role': role}
+        _update_users(users)
         return jsonify({"status": "success", "message": "User created successfully"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 400
@@ -192,11 +202,11 @@ def create_user(username, password, role):
 @role_required(['admin'])
 def delete_user(username):
     try:
-        if username not in USERS:
+        users = get_users()
+        if username not in users:
             return jsonify({"status": "error", "message": "User does not exist"}), 400
-        USERS.pop(username)
-        with open('config.py', 'w') as file:
-            file.write("USERS = " + str(USERS))
+        users.pop(username)
+        _update_users(users)
         return jsonify({"status": "success", "message": "User deleted successfully"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 400
@@ -214,10 +224,12 @@ def delete_user(username):
 @role_required(['admin'])
 def update_user(username, password, role):
     try:
+        users = get_users()
+        if not username in users.keys():
+            return jsonify({"status": "error", "message": f'User {username} does not exist. Cannot update it.'})
         hashed_password = generate_password_hash(password)
-        USERS[username] = {'password': hashed_password, 'role': role}
-        with open('config.py', 'w') as file:
-            file.write("USERS = " + str(USERS))
+        users[username] = {'password': hashed_password, 'role': role}
+        _update_users(users)
         return jsonify({"status": "success", "message": "User updated successfully"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 400
@@ -231,7 +243,8 @@ def update_user(username, password, role):
 @auth.login_required
 @role_required(['admin'])
 def get_users():
-    return jsonify(USERS)
+    with open(USERS, 'r') as f:
+        return json.load(f)
 
 
 if __name__ == '__main__':
