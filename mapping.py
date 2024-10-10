@@ -38,7 +38,7 @@ class Mapping:
 
     def get_orientation(self, degree) -> str:
         # Get the orientation name from the degree
-        switch = {
+        max_degree = {
             0: "North",
             45: "North-East",
             90: "East",
@@ -46,10 +46,15 @@ class Mapping:
             180: "South",
             225: "South-West",
             270: "West",
-            315: "North-West"
+            315: "North-West",
+            360: "North"
         }
+        diff = {x: abs(degree - x) for x in max_degree.keys()}
+        min_degree = min(diff, key=diff.get)
+        return max_degree.get(min_degree, "None")
 
-        return switch.get(degree, "None")
+    def get_central_heating(self, value) -> str:
+        return value == "Central"
 
     def get_level(self, value) -> str:
         # Get the level name from the value

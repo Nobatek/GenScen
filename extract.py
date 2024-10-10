@@ -2,7 +2,7 @@ import itertools
 import uuid
 from functools import reduce
 from SPARQLWrapper import SPARQLWrapper, JSON
-from mapping import Mapping
+from mapping import Mapping, get_central_heating
 
 SPARQLQuery = SPARQLWrapper(
     "http://localhost:3030/GenScen/query")
@@ -96,8 +96,10 @@ def insert_data(data):
     for key, value in data['data']['Parameters'].items():
         if key in mapping.mapping_dict and key != "euroregion":
             # Check if the value need to be a double, a string or an integer
-            if key == "dwellings":
+            if key == "ndwellings":
                 query_content += f"""{mapping.mapping_dict[key]} {value} ;"""
+            elif key == "sh.layout":
+                query_content += f"""{mapping.mapping_dict[key]} {get_central_heating(value)} ;"""
             elif value.replace('.', '', 1).isdigit() or (key == "floorarea" and value.isdigit()):
                 query_content += f"""{mapping.mapping_dict[key]} "{float(value)}"^^xsd:double ;"""
             else:
