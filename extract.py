@@ -119,6 +119,9 @@ def insert_data(data):
         {query_content}
     }}
     """
+
+    print(query)
+
     SPARQLInsert.method= 'POST'
     SPARQLInsert.setQuery(query)
     result = SPARQLInsert.query()
