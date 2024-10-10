@@ -26,7 +26,8 @@ def insert_data(data):
 
     # Check if the request body contains all the necessary parameters
     # Check Parameters
-    all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope", "floorarea", "ndwellings", "type.window", "u.roofs"]
+    all_parameters = ["euroregion", "sh.layout", "sh.fuel", "vent.system", "u.envelope",
+                      "floorarea", "ndwellings", "type.window", "u.roofs"]
     for key in all_parameters:
         if key not in data['data']['Parameters']:
             raise Exception(f"Parameters {key} not found in the request body")
@@ -36,8 +37,8 @@ def insert_data(data):
         raise Exception(f"Parameters surfaces not found in the request body")
     else:
         # Check if each surface contains the necessary parameters
-        surfaceParameters = ["type", "orientation", "area", "name"]
-        for key in surfaceParameters:
+        surface_parameters = ["type", "orientation", "area", "name"]
+        for key in surface_parameters:
             for surface in data['data']['Surfaces']:
                 if key not in surface:
                     raise Exception(f"Parameters {key} not found in Surface {surface} in the request body")
@@ -48,7 +49,7 @@ def insert_data(data):
     # Building
     mapping = Mapping()
 
-    queryContent = f"""
+    query_content = f"""
     tst:pjct{data['data']['project_id']} rdf:type proj:Project ;
         {mapping.mapping_dict['project_id']} {data['data']['project_id']} ;
         {mapping.mapping_dict['euroregion']} proj:{mapping.get_euroregion_name(data['data']['Parameters']['euroregion'])} .
@@ -63,9 +64,9 @@ def insert_data(data):
     # Facades
     
     facade_statements = []
-    maxFacadeArea = 0
-    roofArea = 0
-    roofInsulation = 0
+    max_facade_area = 0
+    roof_area = 0
+    roof_insulation = 0
 
     for surface in data['data']['Surfaces']:
         # Type Wall
@@ -73,42 +74,39 @@ def insert_data(data):
             orientation = mapping.get_orientation(int(surface['orientation']))
             facade_area = float(surface['area'])
             facade_statement = f"""
-    tst:batiment-{data['data']['project_id']} bldg:hasFacade [
-        bldg:area "{facade_area}"^^xsd:double ;
-        bldg:orientation "{orientation}" ;
-        bldg:facadeInsulation "{mapping.get_level(float(data['data']['Parameters']['u.envelope']))}" ;
-    ] .
-    """
+                tst:batiment-{data['data']['project_id']} bldg:hasFacade [
+                    bldg:area "{facade_area}"^^xsd:double ;
+                    bldg:orientation "{orientation}" ;
+                    bldg:facadeInsulation "{mapping.get_level(float(data['data']['Parameters']['u.envelope']))}" ;
+                ] .
+                """
             facade_statements.append(facade_statement)
-            if facade_area > maxFacadeArea:
-                maxFacadeArea = facade_area
+            if facade_area > max_facade_area:
+                max_facade_area = facade_area
         # Type Roof
         elif surface['type'] == "roof":
-            roofArea = float(surface['area'])
-            roofInsulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
-    queryContent += "".join(facade_statement for facade_statement in facade_statements)
+            roof_area = float(surface['area'])
+            roof_insulation = mapping.get_level(float(data['data']['Parameters']['u.roofs']))
+    query_content += "".join(facade_statement for facade_statement in facade_statements)
 
     # Parameters
-    queryContent += f"""
+    query_content += f"""
     tst:batiment-{data['data']['project_id']}"""
 
     for key, value in data['data']['Parameters'].items():
         if key in mapping.mapping_dict and key != "euroregion":
             # Check if the value need to be a double, a string or an integer
-            if "dwellings" in key:
-                queryContent += f"""
-        {mapping.mapping_dict[key]} {value} ;"""
-            elif value.replace('.', '', 1).isdigit():
-                queryContent += f"""
-        {mapping.mapping_dict[key]} "{value}"^^xsd:double ;"""
+            if key == "dwellings":
+                query_content += f"""{mapping.mapping_dict[key]} {value} ;"""
+            elif value.replace('.', '', 1).isdigit() or (key == "floorarea" and value.isdigit()):
+                query_content += f"""{mapping.mapping_dict[key]} "{float(value)}"^^xsd:double ;"""
             else:
-                queryContent += f"""
-        {mapping.mapping_dict[key]} "{value}" ;"""
+                query_content += f"""{mapping.mapping_dict[key]} "{value}" ;"""
                 
-    queryContent += f"""
-        bldg:maxFacadeArea "{maxFacadeArea}"^^xsd:double ;
-        bldg:roofArea "{roofArea}"^^xsd:double ;
-        bldg:roofInsulation "{roofInsulation}" ."""
+    query_content += f"""
+        bldg:max_facade_area "{max_facade_area}"^^xsd:double ;
+        bldg:roof_area "{roof_area}"^^xsd:double ;
+        bldg:roof_insulation "{roof_insulation}" ."""
 
     # Query construction
     query = f"""
@@ -116,7 +114,7 @@ def insert_data(data):
 
     INSERT DATA 
     {{
-        {queryContent}
+        {query_content}
     }}
     """
     SPARQLInsert.method= 'POST'

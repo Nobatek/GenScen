@@ -1,4 +1,6 @@
 import pandas as pd
+from config import NUTS_PATH
+
 
 # Class to handle the mapping between the Tecnalia data and the SPARQL query
 class Mapping:
@@ -21,7 +23,7 @@ class Mapping:
 
     def _get_euroregion_mapping_df(self) -> pd.DataFrame:
         # Load the mapping file
-        df_mapping = pd.read_csv('euroregion_mapping.csv')
+        df_mapping = pd.read_csv(NUTS_PATH + 'euroregion_mapping.csv')
         return df_mapping
 
     def get_euroregion_name(self, code) -> str:
