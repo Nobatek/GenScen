@@ -197,7 +197,8 @@
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_10cm)]
 
 [base_windows:
-    (?p rdf:type proj:Project) (?reco proj:project ?p) (?reco proj:alternative intv:ChangeWindows)
+    (?p rdf:type proj:Project) (?p proj:building ?bldg)
+    (?bldg bldg:glazingLevel "Single")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:BaselineScenario)
 -> (?scen proj:isMadeOf intv:DoubleGlazedWindows)]
 
@@ -243,7 +244,8 @@
 -> (?scen proj:isMadeOf intv:Insulation_Roof_XPS_30cm)]
 
 [nzeb_windows:
-    (?p rdf:type proj:Project) (?reco proj:project ?p) (?reco proj:alternative intv:ChangeWindows)
+    (?p rdf:type proj:Project) (?p proj:building ?bldg)
+    (?bldg bldg:glazingLevel "Single")
 	(?scen proj:forProject ?p) (?scen rdf:type proj:nZeBScenario)
 -> (?scen proj:isMadeOf intv:DoubleGlazedWindows)]
 
@@ -316,8 +318,16 @@
 #	(?scen_high proj:isMadeOf intv:ENSNARE_Biosourced_10cm)
 #]
 
+[ensnare_facade_yet_high:
+    (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:hasFacade ?fcd)
+	(?fcd  bldg:facadeInsulation "High") (?fcd bldg:orientation ?orientation) regex(?orientation, '(North)(.*)')
+	makeTemp(?scen_high)
+-> (?scen_high proj:forProject ?p) (?scen_high rdf:type proj:EnsnareScenario_Passive_High) (?scen_high rdfs:label "High insulation")
+]
+
+
 [ensnare_windows:
-    (?p rdf:type proj:Project) (?reco proj:project ?p) (?reco proj:alternative intv:ChangeWindows)
+    (?p rdf:type proj:Project) (?p proj:building ?bldg) (?bldg bldg:glazingLevel "Single")
 	(?scen proj:forProject ?p) (?scen rdf:type ?type) (?type rdfs:subClassOf proj:EnsnareScenario_Passive)
 -> (?scen proj:isMadeOf intv:ENSNARE_ClassicWindows) (?scen proj:isMadeOf intv:ENSNARE_ActiveWindows)]
 

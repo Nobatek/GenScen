@@ -40,13 +40,13 @@ class Mapping:
         # Get the orientation name from the degree
         max_degree = {
             0: "North",
-            45: "North-East",
+            45: "North East",
             90: "East",
-            135: "South-East",
+            135: "South East",
             180: "South",
-            225: "South-West",
+            225: "South West",
             270: "West",
-            315: "North-West",
+            315: "North West",
             360: "North"
         }
         diff = {x: abs(degree - x) for x in max_degree.keys()}
@@ -58,13 +58,12 @@ class Mapping:
 
     def get_level(self, value) -> str:
         # Get the level name from the value
-        level = "None"
-        
-        if value >= 0.6:
-            level = "High"
-        elif value >= 0.3:
-            level = "Medium"
-        elif value >= 0.1:
-            level = "Low"
 
-        return level
+        if value >= 0.6:
+            return "High"
+        if value >= 0.3:
+            return "Medium"
+        if value >= 0.1:
+            return "Low"
+
+        return "None"

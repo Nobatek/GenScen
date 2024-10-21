@@ -91,7 +91,7 @@ def insert_data(data):
 
     # Parameters
     query_content += f"""
-    tst:batiment-{data['data']['project_id']}"""
+    tst:batiment-{data['data']['project_id']} """
 
     for key, value in data['data']['Parameters'].items():
         if key in mapping.mapping_dict and key != "euroregion":
@@ -99,16 +99,16 @@ def insert_data(data):
             if key == "ndwellings":
                 query_content += f"""{mapping.mapping_dict[key]} {value} ;"""
             elif key == "sh.layout":
-                query_content += f"""{mapping.mapping_dict[key]} {mapping.get_central_heating(value)} ;"""
+                query_content += f"""{mapping.mapping_dict[key]} "{mapping.get_central_heating(value)}" ;"""
             elif value.replace('.', '', 1).isdigit() or (key == "floorarea" and value.isdigit()):
                 query_content += f"""{mapping.mapping_dict[key]} "{float(value)}"^^xsd:double ;"""
             else:
                 query_content += f"""{mapping.mapping_dict[key]} "{value}" ;"""
                 
     query_content += f"""
-        bldg:max_facade_area "{max_facade_area}"^^xsd:double ;
-        bldg:roof_area "{roof_area}"^^xsd:double ;
-        bldg:roof_insulation "{roof_insulation}" ."""
+        bldg:maxFacadeArea "{max_facade_area}"^^xsd:double ;
+        bldg:roofArea "{roof_area}"^^xsd:double ;
+        bldg:roofInsulation "{roof_insulation}" ."""
 
     # Query construction
     query = f"""
