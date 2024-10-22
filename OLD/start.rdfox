@@ -1,8 +1,0 @@
-endpoint start
-dstore create reno_scen
-active reno_scen
-import +p GenScen.ttl
-set output out
-import utils.dlog
-import baseline.dlog
-select ?s where {?s rscen:forProject <https://nobatek.inef4.com/data-models/renovation-scenario/test#pjct3> }

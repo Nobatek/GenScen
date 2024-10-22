@@ -173,7 +173,7 @@
   rdfs:comment "The type of energy used for heating." ;
   owl:oneOf (
       "Electricity"
-      "Gaz"
+      "Gas"
       "Fuel"
       "Wood"
       "Other"
