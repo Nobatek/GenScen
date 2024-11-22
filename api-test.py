@@ -164,7 +164,8 @@ def get_scenarios(project_id):
 @auth.login_required
 @role_required(['admin', 'user'])
 def remove(project_id):
-    return jsonify(remove_data(project_id), 200)
+    res = remove_data(project_id)
+    return jsonify("", res.response.getcode())
 
 
 # ------------------------------ USER MANAGEMENT ----------------------------- #

@@ -120,7 +120,6 @@ def insert_data(data):
     }}
     """
 
-    print(query)
 
     SPARQLInsert.method= 'POST'
     SPARQLInsert.setQuery(query)
@@ -226,7 +225,6 @@ def _format_ensnare(scenarios):
     passive = {}
     active = {}
     labels = {}
-    # print(scenarios)
     for scenario in scenarios:
         # format passive
         id_passive = scenario['scen_passive']['value']
@@ -277,8 +275,9 @@ def _format_active(intvs_active, description):
     return facades
 
 def remove_data(project_id):
+    # SPARQLRemove.reset()
     SPARQLRemove.setReturnFormat(JSON)
-    SPARQLRemove.setMethod('POST')
+    SPARQLRemove.setMethod(POST)
     SPARQLRemove.setQuery(f"""
         {_get_prefix()}
         
@@ -295,4 +294,5 @@ def remove_data(project_id):
             ?bldg ?pred_ ?obj_ .
             ?fcd ?pred__ ?ojb__ .
         }}""")
-    return SPARQLRemove.query()
+    results = SPARQLRemove.query()
+    return results
