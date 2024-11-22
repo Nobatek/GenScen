@@ -21,20 +21,18 @@ def _test_users():
 def _test_projects():
     try:
         #print('Test from Tecnalia')
-        # response = requests.post('https://genscen.ensnare.nobatek.com/project/1047', auth=('pierre', 'ensn@re'))
-        response = requests.post('http://127.0.0.1:5000/project/1047', auth=('john', 'hello'))
-        print(response.json())
+        #response = requests.post('https://genscen.ensnare.nobatek.com/project/1047', auth=('pierre', 'ensn@re'))
+        # response = requests.post('http://127.0.0.1:5000/project/1047', auth=('john', 'hello'))
+        #print(response.json())
 
         #response = requests.get('https://genscen.ensnare.nobatek.com/scenarios/1047', auth=('pierre', 'ensn@re'))
-        response = requests.get('http://127.0.0.1:5000/scenarios/1047', auth=('john', 'hello'))
-        print(response.json())
+        # response = requests.get('http://127.0.0.1:5000/scenarios/1047', auth=('john', 'hello'))
+        #print(response.json())
 
-        #response = requests.delete('https://genscen.ensnare.nobatek.com/project/1047', auth=('pierre', 'ensn@re'))
-        response = requests.delete('http://127.0.0.1:5000/project/1047', auth=('john', 'hello'))
+        response = requests.delete('https://genscen.ensnare.nobatek.com/project/1047', auth=('pierre', 'ensn@re'))
+        # response = requests.delete('http://127.0.0.1:5000/project/1047', auth=('john', 'hello'))
         print(response)
         print(response.status_code)
-        # print(response.read())
-        # print(response.json())
 
         # print("TEST 1: create a new project")
         #response = requests.post('http://127.0.0.1:5000/project/1006', auth=('john', 'hello'))

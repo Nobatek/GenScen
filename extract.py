@@ -1,7 +1,7 @@
 import itertools
 import uuid
 from functools import reduce
-from SPARQLWrapper import SPARQLWrapper, JSON
+from SPARQLWrapper import SPARQLWrapper, JSON, POST
 from mapping import Mapping
 
 SPARQLQuery = SPARQLWrapper(
