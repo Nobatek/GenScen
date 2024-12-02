@@ -210,7 +210,7 @@ interv:DoubleGlazedWindows
 interv:ENSNARE_ClassicWindows
 	rdf:type interv:RenovationAction ;
 	interv:refines interv:ChangeWindows ;
-	rdfs:label "wlassic windows" ;
+	rdfs:label "classic windows" ;
 .
 interv:ENSNARE_ActiveWindows
 	rdf:type interv:RenovationAction ;
