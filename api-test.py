@@ -38,7 +38,8 @@ def get_tecnalia_data(project_id):
     prehash = sha512(str(params).encode('utf-8')).hexdigest()
     # hash = SHA512(timestamp$url$user$prehash$pass)
     now = str(time.time())[:13]
-    core_url = 'ensnare.tecnalia.com'
+    # core_url = 'ensnare.tecnalia.com'
+    core_url = 'ensnare.urban.tecnalia.dev'
     # url = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_project_param'
     url2 = 'https://'+core_url+'/DP4ER/webresources/frontend/ensnare_ddbb/get_genscen_params'
     user = 'guest@guest.com'
